@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <footer className="border-t py-6 text-center text-sm text-gray-500">
             OC Public Services &middot; Built with open-source AI &middot;{" "}
-            <a href="/about" className="underline">Data Policy</a>
+            <a href="/about/" className="underline">Data Policy</a>
           </footer>
         </LanguageProvider>
       </body>

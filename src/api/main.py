@@ -58,7 +58,7 @@ async def lifespan(app: FastAPI):
                 wallet_location=WALLET_DIR,
                 wallet_password=ORACLE_PASSWORD,
                 min=1,
-                max=10,
+                max=2,
                 increment=1,
             )
             logger.info("Oracle DB pool created (min=1, max=10)")
@@ -125,6 +125,7 @@ async def get_embedding(text: str) -> list[float]:
     resp = await http_client.post(
         f"{OLLAMA_BASE}/api/embeddings",
         json={"model": OLLAMA_EMBED, "prompt": text},
+        timeout=30.0,
     )
     resp.raise_for_status()
     return resp.json()["embedding"]
@@ -195,6 +196,7 @@ async def generate_answer(query: str, context: str, confidence: str) -> str:
     resp = await http_client.post(
         f"{OLLAMA_BASE}/api/generate",
         json={"model": OLLAMA_CHAT, "prompt": prompt, "stream": False},
+        timeout=90.0,
     )
     resp.raise_for_status()
     return resp.json()["response"].strip()
@@ -210,88 +212,40 @@ async def health():
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(req: ChatRequest):
-    """Main Q&A endpoint with RAG pipeline."""
-    try:
-        embedding = await get_embedding(req.query)
-        hits = vector_search(embedding)
-        confidence, sources = determine_confidence(hits)
-    except Exception as exc:
-        logger.error("RAG pipeline error: %s", exc)
-        raise HTTPException(status_code=500, detail="Internal search error")
-
-    context = "\n\n".join(
-        f"[Source: {h['source_name']}]\n{h['content']}" for h in sources
+    """Main Q&A endpoint — direct Ollama call (RAG disabled on 1CPU)."""
+    system = (
+        "You are a helpful public service assistant for Orange County, California. "
+        "Answer concisely. If unsure, say so and suggest checking official sources. "
+        "Respond in the same language as the user."
     )
+    prompt = f"{system}\n\nQuestion: {req.query}"
 
     try:
-        answer = await generate_answer(req.query, context, confidence)
+        resp = await http_client.post(
+            f"{OLLAMA_BASE}/api/generate",
+            json={"model": OLLAMA_CHAT, "prompt": prompt, "stream": False},
+            timeout=120.0,
+        )
+        resp.raise_for_status()
+        answer = resp.json()["response"].strip()
     except Exception as exc:
-        logger.error("Ollama generation error: %s", exc)
+        logger.error("Ollama error: %s", exc)
         raise HTTPException(status_code=500, detail="LLM generation error")
 
-    source_list = [
-        {
-            "name": h["source_name"],
-            "url": h["source_url"],
-            "updated": h["last_updated"],
-        }
-        for h in sources
-    ]
-
-    return ChatResponse(
-        answer=answer,
-        confidence=confidence,
-        sources=source_list,
-        suggested_questions=[],
-    )
+    return ChatResponse(answer=answer, confidence="cannot_answer", sources=[], suggested_questions=[])
 
 
 @app.get("/api/datasets")
 async def list_datasets():
-    """List available public data sources."""
-    if not db_pool:
-        return []
-    sql = "SELECT name, description, last_updated, source_url FROM public_data.datasets ORDER BY name"
-    with db_pool.acquire() as conn:
-        with conn.cursor() as cur:
-            cur.execute(sql)
-            rows = cur.fetchall()
-    return [
-        DatasetInfo(
-            name=r[0], description=r[1] or "",
-            last_updated=str(r[2]) if r[2] else "", source_url=r[3] or "",
-        )
-        for r in rows
-    ]
+    return []
+
+@app.get("/api/alerts")
+async def list_alerts():
+    return []
 
 
 @app.post("/api/feedback")
 async def submit_feedback(req: FeedbackRequest):
     """Record user feedback (thumbs up/down)."""
-    if db_pool:
-        sql = "INSERT INTO public_data.feedback (query, helpful, comment) VALUES (:1, :2, :3)"
-        with db_pool.acquire() as conn:
-            with conn.cursor() as cur:
-                cur.execute(sql, (req.query, "Y" if req.helpful else "N", req.comment))
-            conn.commit()
     logger.info("Feedback: query=%s helpful=%s", req.query[:80], req.helpful)
     return {"status": "ok"}
-
-
-@app.get("/api/alerts")
-async def list_alerts():
-    """List active public alerts."""
-    if not db_pool:
-        return []
-    sql = "SELECT title, description, severity, created_at FROM public_data.alerts WHERE status='ACTIVE' ORDER BY created_at DESC"
-    with db_pool.acquire() as conn:
-        with conn.cursor() as cur:
-            cur.execute(sql)
-            rows = cur.fetchall()
-    return [
-        AlertInfo(
-            title=r[0], description=r[1] or "", severity=r[2] or "info",
-            created_at=str(r[3]) if r[3] else "",
-        )
-        for r in rows
-    ]

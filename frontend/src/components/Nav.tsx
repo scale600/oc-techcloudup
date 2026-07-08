@@ -11,7 +11,7 @@ export function Nav() {
           {t("app.title")}
         </Link>
         <div className="flex items-center gap-5 text-base">
-          <Link href="/" className="hover:text-blue-600 font-medium">{t("nav.home")}</Link>
+           <Link href="/" className="hover:text-blue-600 font-medium" prefetch={false}>{t("nav.home")}</Link>
           <Link href="/datasets/" className="hover:text-blue-600 font-medium">{t("nav.datasets")}</Link>
           <Link href="/alerts/" className="hover:text-blue-600 font-medium">{t("nav.alerts")}</Link>
           <Link href="/about/" className="hover:text-blue-600 font-medium">{t("nav.about")}</Link>
