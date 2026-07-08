@@ -30,7 +30,7 @@ services:
 
   api:
     build:
-      context: ./api
+      context: ../src/api
     container_name: oc-api
     ports:
       - "127.0.0.1:8000:8000"
