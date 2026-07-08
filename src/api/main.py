@@ -37,7 +37,7 @@ logger = logging.getLogger("oc-api")
 # ---------------------------------------------------------------------------
 # Global state
 # ---------------------------------------------------------------------------
-db_pool: Optional[oracledb.ConnectionPool] = None
+db_pool = None
 http_client: Optional[httpx.AsyncClient] = None
 
 # ---------------------------------------------------------------------------
@@ -45,47 +45,11 @@ http_client: Optional[httpx.AsyncClient] = None
 # ---------------------------------------------------------------------------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global db_pool, http_client
-
-    # Init Oracle connection pool
-    if ORACLE_PASSWORD:
-        try:
-            db_pool = oracledb.create_pool(
-                user=ORACLE_USER,
-                password=ORACLE_PASSWORD,
-                dsn=ORACLE_DSN,
-                config_dir=WALLET_DIR,
-                wallet_location=WALLET_DIR,
-                wallet_password=ORACLE_PASSWORD,
-                min=1,
-                max=2,
-                increment=1,
-            )
-            logger.info("Oracle DB pool created (min=1, max=10)")
-        except Exception as exc:
-            logger.warning("DB pool init failed (will retry per-request): %s", exc)
-    else:
-        logger.warning("ORACLE_PASSWORD not set — DB disabled")
-
+    global http_client
     http_client = httpx.AsyncClient(timeout=httpx.Timeout(120.0))
-
-    # Warm up Ollama — load model into memory
-    try:
-        await http_client.post(
-            f"{OLLAMA_BASE}/api/generate",
-            json={"model": OLLAMA_CHAT, "prompt": ".", "stream": False},
-            timeout=60.0,
-        )
-        logger.info("Ollama warmup complete")
-    except Exception as exc:
-        logger.warning("Ollama warmup failed: %s", exc)
-
     yield
-
     if http_client:
         await http_client.aclose()
-    if db_pool:
-        db_pool.close()
 
 # ---------------------------------------------------------------------------
 # App
