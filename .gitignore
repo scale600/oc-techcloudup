@@ -143,6 +143,13 @@ PRD-kor.md
 PRD.md
 free-resources.md
 
+# OCI resource IDs (use oci-vars.sh.example as template)
+scripts/oci-vars.sh
+
+# AI agent configs (session-specific)
+AGENTS.md
+CLAUDE.md
+
 # Local data mount (VM sync)
 /data/
 .omo/

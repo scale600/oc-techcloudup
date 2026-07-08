@@ -1,0 +1,31 @@
+# OCI Resource IDs — generated 2026-07-07
+# Source these with: source scripts/oci-vars.sh
+
+export COMPARTMENT_ID="<YOUR_OCID>"
+
+# Network
+export VCN_ID="<YOUR_OCID>"
+export IGW_ID="<YOUR_OCID>"
+export NATGW_ID="<YOUR_OCID>"
+
+# Subnets
+export PUB_SUBNET="<YOUR_OCID>"    # 10.0.1.0/24, PHX-AD-1
+export PUB_SUBNET2="<YOUR_OCID>"  # 10.0.3.0/24, PHX-AD-2
+export PRIV_SUBNET="<YOUR_OCID>"  # 10.0.2.0/24, PHX-AD-1
+
+# Route Tables
+export PUB_RT="<YOUR_OCID>"
+export PRIV_RT="<YOUR_OCID>"
+
+# Security Lists
+export PUB_SL="<YOUR_OCID>"
+export PRIV_SL="<YOUR_OCID>"
+
+# Load Balancer
+export LB_ID="<YOUR_OCID>"
+export LB_IP="<YOUR_LB_IP>"
+
+# Instances
+export VM_E21_ID="<YOUR_OCID>"
+export VM_E21_IP="<YOUR_VM_IP>"
+export VM_MICRO_ID="<YOUR_OCID>"
