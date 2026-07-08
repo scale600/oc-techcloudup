@@ -36,3 +36,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   outline: 3px solid #2563eb;
   outline-offset: 2px;
 }
+
+/* Faint city name labels on map */
+.city-label {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1e293b;
+  text-shadow: 0 0 3px rgba(255,255,255,0.8);
+  pointer-events: none;
+  white-space: nowrap;
+}
