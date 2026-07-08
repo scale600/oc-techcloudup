@@ -67,7 +67,19 @@ async def lifespan(app: FastAPI):
     else:
         logger.warning("ORACLE_PASSWORD not set — DB disabled")
 
-    http_client = httpx.AsyncClient(timeout=httpx.Timeout(60.0))
+    http_client = httpx.AsyncClient(timeout=httpx.Timeout(120.0))
+
+    # Warm up Ollama — load model into memory
+    try:
+        await http_client.post(
+            f"{OLLAMA_BASE}/api/generate",
+            json={"model": OLLAMA_CHAT, "prompt": ".", "stream": False},
+            timeout=60.0,
+        )
+        logger.info("Ollama warmup complete")
+    except Exception as exc:
+        logger.warning("Ollama warmup failed: %s", exc)
+
     yield
 
     if http_client:

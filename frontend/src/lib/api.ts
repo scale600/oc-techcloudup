@@ -8,13 +8,25 @@ export interface ChatResponse {
 }
 
 export async function sendChat(query: string, language = "en"): Promise<ChatResponse> {
-  const res = await fetch(`${API_BASE}/api/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, language }),
-  });
-  if (!res.ok) throw new Error(`API error: ${res.status}`);
-  return res.json();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 120000);
+  try {
+    const res = await fetch(`${API_BASE}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, language }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    return res.json();
+  } catch (e) {
+    clearTimeout(timeout);
+    if ((e as Error).name === "AbortError") {
+      throw new Error("Request timed out. The AI is still warming up — please try again.");
+    }
+    throw e;
+  }
 }
 
 export async function sendFeedback(query: string, helpful: boolean, comment?: string) {
