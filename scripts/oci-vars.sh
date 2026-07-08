@@ -24,3 +24,8 @@ export PRIV_SL="ocid1.securitylist.oc1.phx.aaaaaaaae2w6n2vtf7ejylpgopf5qmp3d4egk
 # Load Balancer
 export LB_ID="ocid1.loadbalancer.oc1.phx.aaaaaaaasmwhdxi3seqatyufm7fczhgu3zvibshfqxnrz3h7o7aii64opbsa"
 export LB_IP="161.153.46.132"
+
+# Instances
+export VM_E21_ID="ocid1.instance.oc1.phx.anyhqljtnpazchicz7kykjwmwtwag2w5rtnnofvqfsdyrqvndm4lkgmiuxoa"
+export VM_E21_IP="129.146.143.243"
+export VM_MICRO_ID="ocid1.instance.oc1.phx.anyhqljtnpazchiczyyeacgtwk4hvlsvllbhdd3dgfsx3nslpkydpmz32zka"

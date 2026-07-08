@@ -226,7 +226,7 @@ curl -s -o /dev/null -w "Final status: %{http_code} from %{url_effective}\n" \
 log "=== Step 9: Terminating old E2.1 instance ==="
 E2_INSTANCE_ID=$(oci compute instance list \
     --compartment-id "$COMPARTMENT_ID" \
-    --display-name "oc-public-vm1" \
+    --display-name "oc-platform-vm1" \
     --lifecycle-state RUNNING \
     --query 'data[0].id' \
     --raw-output 2>/dev/null || true)

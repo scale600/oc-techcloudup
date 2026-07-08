@@ -13,6 +13,8 @@
 # ============================================================================
 set -euo pipefail
 
+export PATH="/usr/local/bin:/usr/bin:/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="/var/log/a1-check.log"
 
@@ -41,7 +43,7 @@ fi
 
 # --- Look up the latest Oracle Linux 9 image for A1 shape ---
 log "Looking up OL9 image for A1.Flex..."
-IMAGE_ID=$(oci compute images list \
+IMAGE_ID=$(oci compute image list \
     --compartment-id "$COMPARTMENT_ID" \
     --operating-system "Oracle Linux" \
     --operating-system-version "9" \
@@ -171,11 +173,12 @@ ENVEOF
         log "FAIL $AD: Out of host capacity"
     elif echo "$LAUNCH_BODY" | grep -qi "LimitExceeded\|QuotaExceeded\|ServiceLimit"; then
         log "FAIL $AD: Service limit exceeded — check tenancy limits"
-        # Don't retry other ADs if we're at tenancy limit
         exit 1
+    elif echo "$LAUNCH_BODY" | grep -qi "\"status\": 500"; then
+        log "FAIL $AD: OCI internal error (500) — transient, will retry"
     else
-        log "FAIL $AD: Unexpected error"
-        log "  $(echo "$LAUNCH_BODY" | tail -5)"
+        log "FAIL $AD: Unexpected error (will retry next cycle)"
+        log "  $(echo "$LAUNCH_BODY" | grep -oP '"message":\s*"\K[^"]+' | head -1)"
     fi
 done
 
