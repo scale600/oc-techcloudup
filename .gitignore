@@ -140,6 +140,9 @@ test-results/
 # Project-Specific
 # ============================================================
 PRD-kor.md
+PRD.md
+free-resources.md
 
 # Local data mount (VM sync)
 /data/
+.omo/

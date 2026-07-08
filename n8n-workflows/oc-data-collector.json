@@ -1,0 +1,42 @@
+{
+  "name": "OC Data Collector",
+  "nodes": [
+    {
+      "name": "Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "parameters": {
+        "rule": {
+          "interval": [{"field": "hours", "hoursInterval": 24}]
+        }
+      }
+    },
+    {
+      "name": "Fetch Census ACS",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "url": "https://api.census.gov/data/2025/acs/acs5?get=NAME,B19013_001E&for=county:059&in=state:06",
+        "method": "GET"
+      }
+    },
+    {
+      "name": "Transform",
+      "type": "n8n-nodes-base.set",
+      "parameters": {
+        "values": {
+          "string": [
+            {"name": "collection_date", "value": "={{ $now.format('YYYY-MM-DD') }}"},
+            {"name": "source", "value": "Census ACS 2025 5-Year"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Store in DB",
+      "type": "n8n-nodes-base.postgres",
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO ocpublic.datasets (name, source_url, collection_date, description) VALUES ('ACS 2025 Income', 'https://api.census.gov/data/2025/acs/acs5', :date, 'Median household income by county')"
+      }
+    }
+  ]
+}

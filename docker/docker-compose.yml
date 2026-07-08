@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - /data/ollama:/root/.ollama
+    ports:
+      - "127.0.0.1:11434:11434"
+    restart: unless-stopped
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    volumes:
+      - /data/open-webui:/app/backend/data
+    ports:
+      - "127.0.0.1:3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_AUTH=false
+      - WEBUI_NAME=OC Public Services
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  api:
+    build:
+      context: ./api
+    container_name: oc-api
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=phi3:mini
+      - ORACLE_WALLET_DIR=/app/wallet
+      - ORACLE_DSN=ocpublic_medium
+      - ORACLE_USER=ocpublic
+      - ORACLE_PASSWORD=${DB_ADMIN_PASSWORD}
+    volumes:
+      - /data/wallet:/app/wallet:ro
+      - /data/logs:/app/logs
+    restart: unless-stopped
+    depends_on:
+      - ollama
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - /data/redis:/data
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    profiles:
+      - full
+
+networks:
+  default:
+    name: oc-platform
