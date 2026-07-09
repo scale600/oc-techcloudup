@@ -108,8 +108,8 @@ export default function MapPage() {
               </button>
             ))}
           </div>
-          <p className="mt-1.5 text-[11px] text-slate-500 text-center sm:text-left ml-1 transition-opacity duration-200">
-            {isEn ? m.desc : m.descEs}
+          <p className="mt-1.5 ml-1 text-[11px] text-slate-600 font-medium transition-all duration-200">
+            {m.symbol} {isEn ? m.desc : m.descEs}
           </p>
         </div>
 
