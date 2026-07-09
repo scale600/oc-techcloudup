@@ -72,3 +72,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.leaflet-interactive {
+  transition: fill 0.4s ease, stroke 0.4s ease, stroke-width 0.3s ease;
+}
