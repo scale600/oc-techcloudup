@@ -10,10 +10,10 @@ const GeoJSON = dynamic(() => import("react-leaflet").then((m) => m.GeoJSON), { 
 interface CityData { name: string; population: number; median_income: number; median_home: number; }
 type Metric = "median_income" | "population" | "median_home";
 
-const METRICS: { key: Metric; label: string; labelEs: string; symbol: string; format: (v: number) => string; colors: [number, string][] }[] = [
-  { key: "median_income", label: "Income", labelEs: "Ingreso", symbol: "💰", format: (v) => `$${v.toLocaleString()}`, colors: [[60000,"#e5f5e0"],[80000,"#a1d99b"],[100000,"#41ab5d"],[130000,"#006d2c"]] },
-  { key: "population", label: "Population", labelEs: "Población", symbol: "👥", format: (v) => v.toLocaleString(), colors: [[10000,"#eff3ff"],[50000,"#bdd7e7"],[100000,"#6baed6"],[200000,"#2171b5"]] },
-  { key: "median_home", label: "Homes", labelEs: "Vivienda", symbol: "🏠", format: (v) => `$${v.toLocaleString()}`, colors: [[600000,"#fee5d9"],[800000,"#fcae91"],[1000000,"#fb6a4a"],[1500000,"#cb181d"]] },
+const METRICS: { key: Metric; label: string; labelEs: string; symbol: string; format: (v: number) => string; legendFmt: (v: number) => string; colors: [number, string][] }[] = [
+  { key: "median_income", label: "Income", labelEs: "Ingreso", symbol: "💰", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`, colors: [[60000,"#e5f5e0"],[80000,"#a1d99b"],[100000,"#41ab5d"],[130000,"#006d2c"]] },
+  { key: "population", label: "Population", labelEs: "Población", symbol: "👥", format: (v) => v.toLocaleString(), legendFmt: (v) => v >= 1000 ? `${(v/1000).toFixed(0)}K` : `${v}`, colors: [[10000,"#eff3ff"],[50000,"#bdd7e7"],[100000,"#6baed6"],[200000,"#2171b5"]] },
+  { key: "median_home", label: "Homes", labelEs: "Vivienda", symbol: "🏠", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : `$${(v/1000).toFixed(0)}K`, colors: [[600000,"#fee5d9"],[800000,"#fcae91"],[1000000,"#fb6a4a"],[1500000,"#cb181d"]] },
 ];
 
 function getColor(value: number, stops: [number, string][]) {
@@ -117,8 +117,8 @@ export default function MapPage() {
             <span className="text-[10px] text-gray-400">{isEn ? "Lo" : "Ba"}</span>
             {m.colors.map(([val, color]) => (
               <div key={val} className="flex flex-col items-center gap-0.5">
-                <div className="w-5 h-3 rounded-sm" style={{ backgroundColor: color }} />
-                <span className="text-[9px] leading-none text-gray-500">{m.format(val)}</span>
+                <div className="w-5 h-3 rounded-sm shrink-0" style={{ backgroundColor: color }} />
+                <span className="text-[9px] leading-none text-gray-500 whitespace-nowrap">{m.legendFmt(val)}</span>
               </div>
             ))}
             <span className="text-[10px] text-gray-400">{isEn ? "Hi" : "Al"}</span>
