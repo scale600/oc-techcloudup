@@ -170,8 +170,8 @@ function CityPanel({ selected, all, metric, isEn, onClose }: { selected: CityDat
 
       <div className="grid grid-cols-3 gap-2">
         {[
-          { k: "population", emoji: "👥", labelEn: "Population", labelEs: "Población" },
           { k: "median_income", emoji: "💰", labelEn: "Income", labelEs: "Ingreso" },
+          { k: "population", emoji: "👥", labelEn: "Population", labelEs: "Población" },
           { k: "median_home", emoji: "🏠", labelEn: "Homes", labelEs: "Vivienda" },
         ].map((item) => {
           const val = selected[item.k as keyof CityData] as number;
