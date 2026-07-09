@@ -127,6 +127,13 @@ export default function MapPage() {
             <span className="text-[10px] text-gray-400">{isEn ? "Hi" : "Al"}</span>
           </div>
         </div>
+
+        {/* Data source badge */}
+        <div className="absolute bottom-3 right-2 sm:right-3 z-[1000]">
+          <span className="text-[10px] text-gray-400 bg-white/80 backdrop-blur rounded-lg px-2 py-1">
+            {isEn ? "Source: U.S. Census Bureau ACS 2023" : "Fuente: Censo de EE. UU. ACS 2023"}
+          </span>
+        </div>
       </div>
 
       {/* Sidebar: desktop = fixed panel, mobile = bottom sheet */}
