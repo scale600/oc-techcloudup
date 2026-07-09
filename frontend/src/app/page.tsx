@@ -40,10 +40,29 @@ export default function MapPage() {
   useEffect(() => {
     fetch("/oc-cities.json").then((r) => r.json()).then((d) => {
       setGeoData(d);
-      setData(d.features.map((f: any) => f.properties));
+      const cities = d.features.map((f: any) => f.properties) as CityData[];
+      setData(cities);
+
+      const hash = window.location.hash.slice(1);
+      const params = new URLSearchParams(hash);
+      const hashMetric = params.get("metric") as Metric | null;
+      const hashCity = params.get("city")?.replace(/\+/g, " ");
+      if (hashMetric && METRICS.some((x) => x.key === hashMetric)) setMetric(hashMetric);
+      if (hashCity) {
+        const found = cities.find((c) => c.name.toLowerCase() === hashCity.toLowerCase());
+        if (found) selectCity(found);
+      }
     });
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    const params = new URLSearchParams();
+    params.set("metric", metric);
+    if (selected) params.set("city", selected.name);
+    window.history.replaceState(null, "", `#${params.toString()}`);
+  }, [metric, selected, mounted]);
 
   const selectCity = useCallback((city: CityData) => {
     setSelected(city);
@@ -228,12 +247,14 @@ export default function MapPage() {
 
 function CityPanel({ selected, all, metric, isEn, onClose }: { selected: CityData; all: CityData[]; metric: Metric; isEn: boolean; onClose: () => void }) {
   const m = METRICS.find((x) => x.key === metric)!;
+  const rank = all.filter((c) => c.name !== selected.name).filter((c) => (c[metric] as number) > (selected[metric] as number)).length + 1;
+  const total = all.length;
   return (
     <div className="p-4 sm:p-5 space-y-4">
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-lg font-bold text-slate-800 tracking-tight">{selected.name}</h2>
-          <p className="text-[11px] text-slate-400 mt-0.5">Orange County, California</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">Orange County, California · <span className="text-indigo-500 font-medium">#{rank} of {total}</span></p>
         </div>
         <button onClick={onClose} className="hidden lg:block text-slate-300 hover:text-slate-500 text-xl leading-none transition-colors">&times;</button>
       </div>
