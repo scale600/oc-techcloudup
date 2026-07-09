@@ -66,6 +66,9 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   border-top-color: rgba(15, 23, 42, 0.9) !important;
 }
 
-/* Scrollbar hide for metric pills */
+
+.leaflet-control-zoom {
+  margin-top: 60px !important;
+}
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
