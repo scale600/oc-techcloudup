@@ -7,14 +7,15 @@ const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapCont
 const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((m) => m.GeoJSON), { ssr: false });
 
-interface CityData { name: string; population: number; median_income: number; median_home: number; uninsured_pct: number; }
-type Metric = "median_income" | "population" | "median_home" | "uninsured_pct";
+interface CityData { name: string; population: number; median_income: number; median_home: number; uninsured_pct: number; poverty_pct: number; }
+type Metric = "median_income" | "population" | "median_home" | "uninsured_pct" | "poverty_pct";
 
 const METRICS: { key: Metric; label: string; labelEs: string; symbol: string; format: (v: number) => string; legendFmt: (v: number) => string; colors: [number, string][] }[] = [
   { key: "median_income", label: "Income", labelEs: "Ingreso", symbol: "💰", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`, colors: [[60000,"#e5f5e0"],[80000,"#a1d99b"],[100000,"#41ab5d"],[130000,"#006d2c"]] },
   { key: "population", label: "Population", labelEs: "Población", symbol: "👥", format: (v) => v.toLocaleString(), legendFmt: (v) => v >= 1000 ? `${(v/1000).toFixed(0)}K` : `${v}`, colors: [[10000,"#eff3ff"],[50000,"#bdd7e7"],[100000,"#6baed6"],[200000,"#2171b5"]] },
   { key: "median_home", label: "Homes", labelEs: "Vivienda", symbol: "🏠", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : `$${(v/1000).toFixed(0)}K`, colors: [[600000,"#fee5d9"],[800000,"#fcae91"],[1000000,"#fb6a4a"],[1500000,"#cb181d"]] },
   { key: "uninsured_pct", label: "Uninsured", labelEs: "Sin Seguro", symbol: "🏥", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[3,"#e5f5e0"],[6,"#a1d99b"],[9,"#fdaa5e"],[14,"#cb181d"]] },
+  { key: "poverty_pct", label: "Poverty", labelEs: "Pobreza", symbol: "🧩", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[5,"#e5f5e0"],[8,"#a1d99b"],[12,"#fdaa5e"],[16,"#cb181d"]] },
 ];
 
 function getColor(value: number, stops: [number, string][]) {
@@ -185,6 +186,7 @@ function CityPanel({ selected, all, metric, isEn, onClose }: { selected: CityDat
           { k: "population", emoji: "👥", labelEn: "Population", labelEs: "Población" },
           { k: "median_home", emoji: "🏠", labelEn: "Homes", labelEs: "Vivienda" },
           { k: "uninsured_pct", emoji: "🏥", labelEn: "Uninsured", labelEs: "Sin Seguro" },
+          { k: "poverty_pct", emoji: "🧩", labelEn: "Poverty", labelEs: "Pobreza" },
         ].map((item) => {
           const val = selected[item.k as keyof CityData] as number;
           const m2 = METRICS.find((x) => x.key === item.k)!;
