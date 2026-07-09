@@ -10,14 +10,14 @@ const GeoJSON = dynamic(() => import("react-leaflet").then((m) => m.GeoJSON), { 
 interface CityData { name: string; population: number; median_income: number; median_home: number; uninsured_pct: number; poverty_pct: number; median_rent: number; edu_pct: number; }
 type Metric = "median_income" | "population" | "median_home" | "uninsured_pct" | "poverty_pct" | "median_rent" | "edu_pct";
 
-const METRICS: { key: Metric; label: string; labelEs: string; desc: string; descEs: string; symbol: string; format: (v: number) => string; legendFmt: (v: number) => string; colors: [number, string][] }[] = [
-  { key: "median_income", label: "Income", labelEs: "Ingreso", desc: "Median household income", descEs: "Ingreso medio por hogar", symbol: "💰", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`, colors: [[60000,"#e2e8f0"],[80000,"#93c5fd"],[100000,"#3b82f6"],[130000,"#1d4ed8"]] },
-  { key: "population", label: "Population", labelEs: "Población", desc: "Total residents", descEs: "Residentes totales", symbol: "👥", format: (v) => v.toLocaleString(), legendFmt: (v) => v >= 1000 ? `${(v/1000).toFixed(0)}K` : `${v}`, colors: [[10000,"#e2e8f0"],[50000,"#93c5fd"],[100000,"#3b82f6"],[200000,"#1d4ed8"]] },
-  { key: "median_home", label: "Homes", labelEs: "Vivienda", desc: "Median home value", descEs: "Valor medio de vivienda", symbol: "🏠", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : `$${(v/1000).toFixed(0)}K`, colors: [[600000,"#e2e8f0"],[800000,"#93c5fd"],[1000000,"#3b82f6"],[1500000,"#1d4ed8"]] },
-  { key: "uninsured_pct", label: "Uninsured", labelEs: "Sin Seguro", desc: "% without health insurance", descEs: "% sin seguro médico", symbol: "🏥", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[3,"#dcfce7"],[6,"#86efac"],[9,"#fb923c"],[14,"#ef4444"]] },
-  { key: "poverty_pct", label: "Poverty", labelEs: "Pobreza", desc: "% below poverty line", descEs: "% bajo línea de pobreza", symbol: "🧩", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[5,"#dcfce7"],[8,"#86efac"],[12,"#fb923c"],[16,"#ef4444"]] },
-  { key: "median_rent", label: "Rent", labelEs: "Alquiler", desc: "Median gross rent", descEs: "Alquiler medio bruto", symbol: "🏢", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(1)}K` : `$${v}`, colors: [[1800,"#e2e8f0"],[2100,"#93c5fd"],[2400,"#3b82f6"],[2800,"#1d4ed8"]] },
-  { key: "edu_pct", label: "Education", labelEs: "Educación", desc: "% with bachelor's degree+", descEs: "% con título universitario", symbol: "🎓", format: (v) => `${v.toFixed(0)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[20,"#e2e8f0"],[35,"#93c5fd"],[50,"#3b82f6"],[65,"#1d4ed8"]] },
+const METRICS: { key: Metric; label: string; labelEs: string; desc: string; descEs: string; symbol: string; direction: "asc" | "desc"; format: (v: number) => string; legendFmt: (v: number) => string; colors: [number, string][] }[] = [
+  { key: "median_income", label: "Income", labelEs: "Ingreso", desc: "Median household income", descEs: "Ingreso medio por hogar", symbol: "💰", direction: "asc", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`, colors: [[60000,"#e2e8f0"],[80000,"#93c5fd"],[100000,"#3b82f6"],[130000,"#1d4ed8"]] },
+  { key: "population", label: "Population", labelEs: "Población", desc: "Total residents", descEs: "Residentes totales", symbol: "👥", direction: "asc", format: (v) => v.toLocaleString(), legendFmt: (v) => v >= 1000 ? `${(v/1000).toFixed(0)}K` : `${v}`, colors: [[10000,"#e2e8f0"],[50000,"#93c5fd"],[100000,"#3b82f6"],[200000,"#1d4ed8"]] },
+  { key: "median_home", label: "Homes", labelEs: "Vivienda", desc: "Median home value", descEs: "Valor medio de vivienda", symbol: "🏠", direction: "asc", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : `$${(v/1000).toFixed(0)}K`, colors: [[600000,"#e2e8f0"],[800000,"#93c5fd"],[1000000,"#3b82f6"],[1500000,"#1d4ed8"]] },
+  { key: "uninsured_pct", label: "Uninsured", labelEs: "Sin Seguro", desc: "% without health insurance", descEs: "% sin seguro médico", symbol: "🏥", direction: "desc", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[3,"#dcfce7"],[6,"#86efac"],[9,"#fb923c"],[14,"#ef4444"]] },
+  { key: "poverty_pct", label: "Poverty", labelEs: "Pobreza", desc: "% below poverty line", descEs: "% bajo línea de pobreza", symbol: "🧩", direction: "desc", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[5,"#dcfce7"],[8,"#86efac"],[12,"#fb923c"],[16,"#ef4444"]] },
+  { key: "median_rent", label: "Rent", labelEs: "Alquiler", desc: "Median gross rent", descEs: "Alquiler medio bruto", symbol: "🏢", direction: "asc", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(1)}K` : `$${v}`, colors: [[1800,"#e2e8f0"],[2100,"#93c5fd"],[2400,"#3b82f6"],[2800,"#1d4ed8"]] },
+  { key: "edu_pct", label: "Education", labelEs: "Educación", desc: "% with bachelor's degree+", descEs: "% con título universitario", symbol: "🎓", direction: "asc", format: (v) => `${v.toFixed(0)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[20,"#e2e8f0"],[35,"#93c5fd"],[50,"#3b82f6"],[65,"#1d4ed8"]] },
 ];
 
 function getColor(value: number, stops: [number, string][]) {
@@ -167,14 +167,22 @@ export default function MapPage() {
             <p className="text-[12px] font-semibold text-slate-700 mb-0.5">{isEn ? m.label : m.labelEs}</p>
             <p className="text-[10px] text-slate-400 mb-2">{isEn ? m.desc : m.descEs}</p>
             <div className="flex items-center gap-1.5">
-              <span className="text-[10px] text-slate-400 font-medium w-5">Lo</span>
+              <span className="text-[10px] text-slate-400 font-medium">
+                {m.direction === "desc"
+                  ? (isEn ? "Low ↓" : "Bajo ↓")
+                  : (isEn ? "Low" : "Bajo")}
+              </span>
               {m.colors.map(([val, color]) => (
                 <div key={val} className="flex flex-col items-center gap-1">
                   <div className="w-6 h-3 rounded-sm" style={{ backgroundColor: color }} />
                   <span className="text-[10px] font-medium text-slate-500 whitespace-nowrap">{m.legendFmt(val)}</span>
                 </div>
               ))}
-              <span className="text-[10px] text-slate-400 font-medium ml-0.5">Hi</span>
+              <span className="text-[10px] text-slate-400 font-medium ml-0.5">
+                {m.direction === "desc"
+                  ? (isEn ? "High ↓" : "Alto ↓")
+                  : (isEn ? "High" : "Alto")}
+              </span>
             </div>
           </div>
         </div>
