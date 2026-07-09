@@ -68,7 +68,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 
 
 .leaflet-control-zoom {
-  margin-top: 78px !important;
+  margin-top: 130px !important;
 }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

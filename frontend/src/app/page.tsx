@@ -34,6 +34,8 @@ export default function MapPage() {
   const [geoData, setGeoData] = useState<any>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     fetch("/oc-cities.json").then((r) => r.json()).then((d) => {
@@ -47,6 +49,16 @@ export default function MapPage() {
     setSelected(city);
     setMobileOpen(true);
   }, []);
+
+  const filteredCities = searchQuery.trim()
+    ? data.filter((c) => c.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    : [];
+
+  const handleCitySearch = (city: CityData) => {
+    selectCity(city);
+    setSearchQuery("");
+    setShowDropdown(false);
+  };
 
   const currentMetric = METRICS.find((m) => m.key === metric)!;
 
@@ -111,6 +123,42 @@ export default function MapPage() {
           <p className="mt-1.5 ml-1 text-[11px] text-slate-600 font-medium transition-all duration-200">
             {m.symbol} {isEn ? m.desc : m.descEs}
           </p>
+
+          {/* City search */}
+          <div className="relative mt-2 ml-1 w-52">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => { setSearchQuery(e.target.value); setShowDropdown(true); }}
+              onFocus={() => setShowDropdown(true)}
+              placeholder={isEn ? "Search city…" : "Buscar ciudad…"}
+              className="w-full px-3 py-1.5 text-[12px] glass rounded-xl border-0 outline-none focus:ring-2 focus:ring-indigo-300 text-slate-700 placeholder-slate-400"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => { setSearchQuery(""); setShowDropdown(false); }}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-sm"
+              >×</button>
+            )}
+            {showDropdown && filteredCities.length > 0 && (
+              <div className="absolute top-full mt-1 left-0 right-0 glass rounded-xl shadow-lg overflow-hidden z-50 max-h-48 overflow-y-auto">
+                {filteredCities.map((c) => (
+                  <button
+                    key={c.name}
+                    onClick={() => handleCitySearch(c)}
+                    className="w-full text-left px-3 py-1.5 text-[12px] text-slate-600 hover:bg-indigo-50 transition-colors"
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            {showDropdown && searchQuery.trim() && filteredCities.length === 0 && (
+              <div className="absolute top-full mt-1 left-0 right-0 glass rounded-xl shadow-lg p-2 text-[11px] text-slate-400 text-center z-50">
+                {isEn ? "No cities found" : "Sin resultados"}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Legend */}
