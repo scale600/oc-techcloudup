@@ -192,9 +192,9 @@ function CityPanel({ selected, all, metric, isEn, onClose }: { selected: CityDat
           const val = selected[item.k as keyof CityData] as number;
           const m2 = METRICS.find((x) => x.key === item.k)!;
           return (
-            <div key={item.k} className={`bg-gray-50 rounded-xl p-2 sm:p-2.5 overflow-hidden ${item.k === metric ? "ring-2 ring-blue-300" : ""}`}>
+            <div key={item.k} className={`bg-gray-50 rounded-xl p-2 sm:p-2.5 min-w-0 ${item.k === metric ? "ring-2 ring-blue-300" : ""}`}>
               <p className="text-[10px] sm:text-[11px] text-gray-400 mb-0.5 truncate">{isEn ? item.labelEn : item.labelEs}</p>
-              <p className="text-xs sm:text-sm font-bold text-gray-900 truncate">{item.emoji} {m2.format(val)}</p>
+              <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">{item.emoji} {m2.format(val)}</p>
             </div>
           );
         })}
@@ -238,12 +238,12 @@ function ComparisonBar({ selected, all, metric, isEn }: { selected: CityData; al
         <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-400" style={{ left: `${((avg - min) / (max - min || 1)) * 100}%` }} />
         <div className="h-full bg-blue-500 rounded-full" style={{ width: `${pct}%` }} />
       </div>
-      <div className="flex justify-between text-[10px] sm:text-xs text-gray-400">
-        <span className="truncate max-w-[30%]">{m.format(min)}</span>
-        <span className={`shrink-0 mx-1 ${val > avg ? "text-green-600 font-semibold" : "text-orange-600 font-semibold"}`}>
+      <div className="flex justify-between text-[9px] sm:text-[10px] text-gray-400 gap-1">
+        <span className="min-w-0 break-all">{m.format(min)}</span>
+        <span className={`shrink-0 text-center ${val > avg ? "text-green-600 font-semibold" : "text-orange-600 font-semibold"}`}>
           {val > avg ? "▲" : "▼"} {isEn ? "vs avg" : "vs prom"} {m.format(Math.round(avg))}
         </span>
-        <span className="truncate max-w-[30%] text-right">{m.format(max)}</span>
+        <span className="min-w-0 break-all text-right">{m.format(max)}</span>
       </div>
     </div>
   );
