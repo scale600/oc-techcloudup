@@ -129,8 +129,8 @@ export default function MapPage() {
         </div>
 
         {/* Data source badge */}
-        <div className="absolute bottom-3 right-2 sm:right-3 z-[1000]">
-          <span className="text-[10px] text-gray-400 bg-white/80 backdrop-blur rounded-lg px-2 py-1">
+        <div className="absolute top-2 right-2 sm:right-3 z-[1000]">
+          <span className="text-[11px] font-medium text-blue-800 bg-blue-50/90 backdrop-blur rounded-lg px-2.5 py-1 border border-blue-200 shadow-sm">
             {isEn ? "Source: U.S. Census Bureau ACS 2023" : "Fuente: Censo de EE. UU. ACS 2023"}
           </span>
         </div>
