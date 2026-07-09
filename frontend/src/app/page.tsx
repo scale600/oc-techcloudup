@@ -210,7 +210,7 @@ export default function MapPage() {
         {/* Source */}
         <div className={`absolute bottom-4 right-3 sm:right-4 z-[1000] transition-all duration-300 ${mobileOpen ? "opacity-0 sm:opacity-100" : "opacity-100"}`}>
           <span className="text-[10px] text-slate-400 bg-white/70 backdrop-blur rounded-full px-3 py-1.5">
-            {isEn ? "U.S. Census Bureau · ACS 2023" : "Censo de EE. UU. · ACS 2023"}
+            {isEn ? "U.S. Census Bureau · ACS 2019–2023" : "Censo de EE. UU. · ACS 2019–2023"}
           </span>
         </div>
 
