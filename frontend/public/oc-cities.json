@@ -9,7 +9,9 @@
         "median_income": 82215,
         "median_home": 785000,
         "uninsured_pct": 10.7,
-        "poverty_pct": 14.1
+        "poverty_pct": 14.1,
+        "median_rent": 1950,
+        "edu_pct": 26
       },
       "geometry": {
         "type": "Polygon",
@@ -47,7 +49,9 @@
         "median_income": 74485,
         "median_home": 720000,
         "uninsured_pct": 14.2,
-        "poverty_pct": 17.8
+        "poverty_pct": 17.8,
+        "median_rent": 1800,
+        "edu_pct": 17
       },
       "geometry": {
         "type": "Polygon",
@@ -85,7 +89,9 @@
         "median_income": 114027,
         "median_home": 1350000,
         "uninsured_pct": 4.2,
-        "poverty_pct": 13.2
+        "poverty_pct": 13.2,
+        "median_rent": 2750,
+        "edu_pct": 72
       },
       "geometry": {
         "type": "Polygon",
@@ -123,7 +129,9 @@
         "median_income": 102597,
         "median_home": 1050000,
         "uninsured_pct": 5.8,
-        "poverty_pct": 7.2
+        "poverty_pct": 7.2,
+        "median_rent": 2400,
+        "edu_pct": 46
       },
       "geometry": {
         "type": "Polygon",
@@ -161,7 +169,9 @@
         "median_income": 82378,
         "median_home": 850000,
         "uninsured_pct": 7.5,
-        "poverty_pct": 13.8
+        "poverty_pct": 13.8,
+        "median_rent": 2050,
+        "edu_pct": 38
       },
       "geometry": {
         "type": "Polygon",
@@ -199,7 +209,9 @@
         "median_income": 68042,
         "median_home": 790000,
         "uninsured_pct": 9.5,
-        "poverty_pct": 14.5
+        "poverty_pct": 14.5,
+        "median_rent": 1900,
+        "edu_pct": 22
       },
       "geometry": {
         "type": "Polygon",
@@ -237,7 +249,9 @@
         "median_income": 93423,
         "median_home": 880000,
         "uninsured_pct": 6.8,
-        "poverty_pct": 11.5
+        "poverty_pct": 11.5,
+        "median_rent": 2100,
+        "edu_pct": 36
       },
       "geometry": {
         "type": "Polygon",
@@ -275,7 +289,9 @@
         "median_income": 86933,
         "median_home": 1150000,
         "uninsured_pct": 7.8,
-        "poverty_pct": 12.5
+        "poverty_pct": 12.5,
+        "median_rent": 2400,
+        "edu_pct": 42
       },
       "geometry": {
         "type": "Polygon",
@@ -313,7 +329,9 @@
         "median_income": 142463,
         "median_home": 2800000,
         "uninsured_pct": 3.2,
-        "poverty_pct": 5.8
+        "poverty_pct": 5.8,
+        "median_rent": 3100,
+        "edu_pct": 66
       },
       "geometry": {
         "type": "Polygon",
@@ -351,7 +369,9 @@
         "median_income": 88763,
         "median_home": 920000,
         "uninsured_pct": 6.5,
-        "poverty_pct": 10.5
+        "poverty_pct": 10.5,
+        "median_rent": 2300,
+        "edu_pct": 40
       },
       "geometry": {
         "type": "Polygon",
@@ -389,7 +409,9 @@
         "median_income": 121314,
         "median_home": 1000000,
         "uninsured_pct": 4.5,
-        "poverty_pct": 5.5
+        "poverty_pct": 5.5,
+        "median_rent": 2500,
+        "edu_pct": 56
       },
       "geometry": {
         "type": "Polygon",
@@ -427,7 +449,9 @@
         "median_income": 107628,
         "median_home": 950000,
         "uninsured_pct": 5.5,
-        "poverty_pct": 6.8
+        "poverty_pct": 6.8,
+        "median_rent": 2400,
+        "edu_pct": 54
       },
       "geometry": {
         "type": "Polygon",
@@ -465,7 +489,9 @@
         "median_income": 134463,
         "median_home": 1100000,
         "uninsured_pct": 3.5,
-        "poverty_pct": 4.8
+        "poverty_pct": 4.8,
+        "median_rent": 2550,
+        "edu_pct": 56
       },
       "geometry": {
         "type": "Polygon",
@@ -503,7 +529,9 @@
         "median_income": 76032,
         "median_home": 780000,
         "uninsured_pct": 7.4,
-        "poverty_pct": 11.2
+        "poverty_pct": 11.2,
+        "median_rent": 2000,
+        "edu_pct": 30
       },
       "geometry": {
         "type": "Polygon",
@@ -541,7 +569,9 @@
         "median_income": 67406,
         "median_home": 820000,
         "uninsured_pct": 8.8,
-        "poverty_pct": 13.5
+        "poverty_pct": 13.5,
+        "median_rent": 1950,
+        "edu_pct": 25
       },
       "geometry": {
         "type": "Polygon",
@@ -579,7 +609,9 @@
         "median_income": 95779,
         "median_home": 1020000,
         "uninsured_pct": 5.5,
-        "poverty_pct": 6.8
+        "poverty_pct": 6.8,
+        "median_rent": 2350,
+        "edu_pct": 45
       },
       "geometry": {
         "type": "Polygon",
@@ -617,7 +649,9 @@
         "median_income": 112342,
         "median_home": 890000,
         "uninsured_pct": 3.6,
-        "poverty_pct": 5.2
+        "poverty_pct": 5.2,
+        "median_rent": 2450,
+        "edu_pct": 62
       },
       "geometry": {
         "type": "Polygon",
@@ -655,7 +689,9 @@
         "median_income": 114567,
         "median_home": 1200000,
         "uninsured_pct": 3.8,
-        "poverty_pct": 5.0
+        "poverty_pct": 5.0,
+        "median_rent": 2650,
+        "edu_pct": 60
       },
       "geometry": {
         "type": "Polygon",
@@ -693,7 +729,9 @@
         "median_income": 108765,
         "median_home": 1300000,
         "uninsured_pct": 5.2,
-        "poverty_pct": 6.5
+        "poverty_pct": 6.5,
+        "median_rent": 2600,
+        "edu_pct": 55
       },
       "geometry": {
         "type": "Polygon",
@@ -731,7 +769,9 @@
         "median_income": 105123,
         "median_home": 1500000,
         "uninsured_pct": 5.0,
-        "poverty_pct": 7.8
+        "poverty_pct": 7.8,
+        "median_rent": 2600,
+        "edu_pct": 55
       },
       "geometry": {
         "type": "Polygon",
@@ -769,7 +809,9 @@
         "median_income": 96543,
         "median_home": 980000,
         "uninsured_pct": 6.5,
-        "poverty_pct": 9.2
+        "poverty_pct": 9.2,
+        "median_rent": 2350,
+        "edu_pct": 46
       },
       "geometry": {
         "type": "Polygon",
@@ -807,7 +849,9 @@
         "median_income": 125678,
         "median_home": 950000,
         "uninsured_pct": 3.8,
-        "poverty_pct": 4.5
+        "poverty_pct": 4.5,
+        "median_rent": 2400,
+        "edu_pct": 58
       },
       "geometry": {
         "type": "Polygon",
@@ -845,7 +889,9 @@
         "median_income": 78543,
         "median_home": 760000,
         "uninsured_pct": 8.0,
-        "poverty_pct": 12.1
+        "poverty_pct": 12.1,
+        "median_rent": 1900,
+        "edu_pct": 28
       },
       "geometry": {
         "type": "Polygon",
@@ -883,7 +929,9 @@
         "median_income": 101234,
         "median_home": 920000,
         "uninsured_pct": 4.6,
-        "poverty_pct": 7.3
+        "poverty_pct": 7.3,
+        "median_rent": 2300,
+        "edu_pct": 48
       },
       "geometry": {
         "type": "Polygon",
@@ -921,7 +969,9 @@
         "median_income": 92456,
         "median_home": 870000,
         "uninsured_pct": 7.2,
-        "poverty_pct": 9.8
+        "poverty_pct": 9.8,
+        "median_rent": 2150,
+        "edu_pct": 38
       },
       "geometry": {
         "type": "Polygon",
@@ -959,7 +1009,9 @@
         "median_income": 101234,
         "median_home": 910000,
         "uninsured_pct": 5.0,
-        "poverty_pct": 6.1
+        "poverty_pct": 6.1,
+        "median_rent": 2250,
+        "edu_pct": 44
       },
       "geometry": {
         "type": "Polygon",
@@ -997,7 +1049,9 @@
         "median_income": 103456,
         "median_home": 890000,
         "uninsured_pct": 4.5,
-        "poverty_pct": 5.5
+        "poverty_pct": 5.5,
+        "median_rent": 2200,
+        "edu_pct": 48
       },
       "geometry": {
         "type": "Polygon",
@@ -1035,7 +1089,9 @@
         "median_income": 95678,
         "median_home": 1050000,
         "uninsured_pct": 4.8,
-        "poverty_pct": 5.8
+        "poverty_pct": 5.8,
+        "median_rent": 2300,
+        "edu_pct": 50
       },
       "geometry": {
         "type": "Polygon",
@@ -1073,7 +1129,9 @@
         "median_income": 82345,
         "median_home": 980000,
         "uninsured_pct": 4.5,
-        "poverty_pct": 5.5
+        "poverty_pct": 5.5,
+        "median_rent": 2400,
+        "edu_pct": 55
       },
       "geometry": {
         "type": "Polygon",
@@ -1111,7 +1169,9 @@
         "median_income": 58432,
         "median_home": 650000,
         "uninsured_pct": 11.5,
-        "poverty_pct": 16.2
+        "poverty_pct": 16.2,
+        "median_rent": 1750,
+        "edu_pct": 16
       },
       "geometry": {
         "type": "Polygon",
@@ -1149,7 +1209,9 @@
         "median_income": 165432,
         "median_home": 1600000,
         "uninsured_pct": 3.0,
-        "poverty_pct": 4.2
+        "poverty_pct": 4.2,
+        "median_rent": 3200,
+        "edu_pct": 62
       },
       "geometry": {
         "type": "Polygon",
@@ -1187,7 +1249,9 @@
         "median_income": 98765,
         "median_home": 880000,
         "uninsured_pct": 4.3,
-        "poverty_pct": 7.0
+        "poverty_pct": 7.0,
+        "median_rent": 2500,
+        "edu_pct": 52
       },
       "geometry": {
         "type": "Polygon",
@@ -1225,7 +1289,9 @@
         "median_income": 45678,
         "median_home": 450000,
         "uninsured_pct": 2.8,
-        "poverty_pct": 7.5
+        "poverty_pct": 7.5,
+        "median_rent": 1800,
+        "edu_pct": 42
       },
       "geometry": {
         "type": "Polygon",
@@ -1263,7 +1329,9 @@
         "median_income": 123456,
         "median_home": 2200000,
         "uninsured_pct": 4.2,
-        "poverty_pct": 6.5
+        "poverty_pct": 6.5,
+        "median_rent": 2800,
+        "edu_pct": 64
       },
       "geometry": {
         "type": "Polygon",

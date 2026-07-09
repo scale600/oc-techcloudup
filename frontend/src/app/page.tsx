@@ -7,8 +7,8 @@ const MapContainer = dynamic(() => import("react-leaflet").then((m) => m.MapCont
 const TileLayer = dynamic(() => import("react-leaflet").then((m) => m.TileLayer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((m) => m.GeoJSON), { ssr: false });
 
-interface CityData { name: string; population: number; median_income: number; median_home: number; uninsured_pct: number; poverty_pct: number; }
-type Metric = "median_income" | "population" | "median_home" | "uninsured_pct" | "poverty_pct";
+interface CityData { name: string; population: number; median_income: number; median_home: number; uninsured_pct: number; poverty_pct: number; median_rent: number; edu_pct: number; }
+type Metric = "median_income" | "population" | "median_home" | "uninsured_pct" | "poverty_pct" | "median_rent" | "edu_pct";
 
 const METRICS: { key: Metric; label: string; labelEs: string; desc: string; descEs: string; symbol: string; format: (v: number) => string; legendFmt: (v: number) => string; colors: [number, string][] }[] = [
   { key: "median_income", label: "Income", labelEs: "Ingreso", desc: "Median household income", descEs: "Ingreso medio por hogar", symbol: "💰", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(0)}K` : `$${v}`, colors: [[60000,"#e2e8f0"],[80000,"#93c5fd"],[100000,"#3b82f6"],[130000,"#1d4ed8"]] },
@@ -16,6 +16,8 @@ const METRICS: { key: Metric; label: string; labelEs: string; desc: string; desc
   { key: "median_home", label: "Homes", labelEs: "Vivienda", desc: "Median home value", descEs: "Valor medio de vivienda", symbol: "🏠", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1e6 ? `$${(v/1e6).toFixed(1)}M` : `$${(v/1000).toFixed(0)}K`, colors: [[600000,"#e2e8f0"],[800000,"#93c5fd"],[1000000,"#3b82f6"],[1500000,"#1d4ed8"]] },
   { key: "uninsured_pct", label: "Uninsured", labelEs: "Sin Seguro", desc: "% without health insurance", descEs: "% sin seguro médico", symbol: "🏥", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[3,"#dcfce7"],[6,"#86efac"],[9,"#fb923c"],[14,"#ef4444"]] },
   { key: "poverty_pct", label: "Poverty", labelEs: "Pobreza", desc: "% below poverty line", descEs: "% bajo línea de pobreza", symbol: "🧩", format: (v) => `${v.toFixed(1)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[5,"#dcfce7"],[8,"#86efac"],[12,"#fb923c"],[16,"#ef4444"]] },
+  { key: "median_rent", label: "Rent", labelEs: "Alquiler", desc: "Median gross rent", descEs: "Alquiler medio bruto", symbol: "🏢", format: (v) => `$${v.toLocaleString()}`, legendFmt: (v) => v >= 1000 ? `$${(v/1000).toFixed(1)}K` : `$${v}`, colors: [[1800,"#e2e8f0"],[2100,"#93c5fd"],[2400,"#3b82f6"],[2800,"#1d4ed8"]] },
+  { key: "edu_pct", label: "Education", labelEs: "Educación", desc: "% with bachelor's degree+", descEs: "% con título universitario", symbol: "🎓", format: (v) => `${v.toFixed(0)}%`, legendFmt: (v) => `${v.toFixed(0)}%`, colors: [[20,"#e2e8f0"],[35,"#93c5fd"],[50,"#3b82f6"],[65,"#1d4ed8"]] },
 ];
 
 function getColor(value: number, stops: [number, string][]) {
@@ -183,6 +185,8 @@ function CityPanel({ selected, all, metric, isEn, onClose }: { selected: CityDat
           { k: "median_home", emoji: "🏠", labelEn: "Homes", labelEs: "Vivienda" },
           { k: "uninsured_pct", emoji: "🏥", labelEn: "Uninsured", labelEs: "Sin Seguro" },
           { k: "poverty_pct", emoji: "🧩", labelEn: "Poverty", labelEs: "Pobreza" },
+          { k: "median_rent", emoji: "🏢", labelEn: "Rent", labelEs: "Alquiler" },
+          { k: "edu_pct", emoji: "🎓", labelEn: "Education", labelEs: "Educación" },
         ].map((item) => {
           const val = selected[item.k as keyof CityData] as number;
           const m2 = METRICS.find((x) => x.key === item.k)!;
