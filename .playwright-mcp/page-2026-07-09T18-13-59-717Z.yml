@@ -1,0 +1,24 @@
+- generic [active] [ref=f10e1]:
+  - banner [ref=f10e2]:
+    - generic [ref=f10e3]: 📍 OC Infographics
+    - button "ES" [ref=f10e5]
+  - main [ref=f10e6]:
+    - generic [ref=f10e8]:
+      - generic [ref=f10e10]:
+        - button "Zoom in" [ref=f10e11] [cursor=pointer]: +
+        - button "Zoom out" [ref=f10e12] [cursor=pointer]: −
+      - generic [ref=f10e14]:
+        - button "💰Income" [ref=f10e15]
+        - button "👥Population" [ref=f10e16]
+        - button "🏠Homes" [ref=f10e17]
+      - generic [ref=f10e18]:
+        - paragraph [ref=f10e19]: Income
+        - generic [ref=f10e20]:
+          - generic [ref=f10e21]: Lo
+          - generic [ref=f10e24]: $60K
+          - generic [ref=f10e27]: $80K
+          - generic [ref=f10e30]: $100K
+          - generic [ref=f10e33]: $130K
+          - generic [ref=f10e34]: Hi
+      - generic [ref=f10e35]: "Source: U.S. Census Bureau ACS 2023"
+  - alert [ref=f10e36]
