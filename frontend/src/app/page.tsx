@@ -291,8 +291,11 @@ function ComparisonBar({ selected, all, metric, isEn }: { selected: CityData; al
   return (
     <div className="bg-slate-50 rounded-xl p-3 sm:p-4 space-y-2.5">
       <p className="text-[11px] font-medium text-slate-400">{isEn ? "Compared to OC Average" : "Comparado con Promedio OC"}</p>
-      <div className="relative h-2 bg-slate-200 rounded-full overflow-hidden">
+      <div className="relative h-2 bg-slate-200 rounded-full overflow-hidden mt-1 mb-3">
         <div className="absolute top-0 w-0.5 h-full bg-slate-300 z-10" style={{ left: `${avgPct}%` }} />
+        <span className="absolute -top-5 text-[9px] font-medium text-slate-400 whitespace-nowrap" style={{ left: `${avgPct}%`, transform: "translateX(-50%)" }}>
+          {isEn ? "OC Avg" : "Prom OC"}
+        </span>
         <div
           className={`h-full rounded-full transition-all duration-500 ${val > avg ? "bg-indigo-500" : "bg-orange-400"}`}
           style={{ width: `${Math.max(pct, 2)}%` }}
