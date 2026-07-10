@@ -11,11 +11,20 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "OC Infographics — Orange County Public Data",
   description: "Interactive map of Orange County cities with public data infographics — income, population, housing.",
+  openGraph: {
+    title: "OC Infographics — Orange County Public Data",
+    description: "Interactive map of Orange County cities with public data infographics — income, population, housing.",
+    type: "website",
+    siteName: "OC Infographics",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
+      <head>
+        <script src="/analytics.js" defer />
+      </head>
       <body className="h-full flex flex-col bg-white text-gray-900">
         <LanguageProvider>
           <Nav />
