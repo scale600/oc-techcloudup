@@ -87,7 +87,7 @@ export default function AboutPage() {
           {[
             { value: "34", label: t("about.cities") },
             { value: "7", label: t("about.metrics_about") },
-            { value: "$0", label: t("about.cost") },
+            { value: "♥", label: t("about.cost") },
           ].map((s) => (
             <div key={s.label} className="text-center p-6 rounded-xl bg-white border border-slate-200">
               <div className="text-3xl font-bold text-indigo-600">{s.value}</div>
@@ -97,10 +97,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Open invitation */}
+      {/* Donation CTA */}
       <section className="rounded-xl bg-gradient-to-br from-indigo-50 to-amber-50 border border-indigo-100 p-8 text-center">
-        <div className="text-2xl mb-3">🤝</div>
-        <h2 className="text-lg font-semibold text-slate-800 mb-3">{t("about.invite_title")}</h2>
+        <div className="text-2xl mb-3">☕</div>
+        <h2 className="text-lg font-semibold text-slate-800 mb-3">{t("about.donate_title")}</h2>
+        <p className="text-slate-600 leading-relaxed text-sm max-w-2xl mx-auto mb-5">{t("about.donate.desc")}</p>
+        <a
+          href="https://buymeacoffee.com/scale600"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-400 text-slate-900 font-semibold text-sm hover:bg-amber-300 transition-colors shadow-sm"
+        >
+          ☕ {t("about.donate.button")}
+        </a>
+      </section>
+
+      {/* Open invitation */}
+      <section className="rounded-xl bg-slate-50 border border-slate-200 p-8 text-center">
         <p className="text-slate-600 leading-relaxed text-sm max-w-2xl mx-auto">{t("about.invite.desc")}</p>
       </section>
     </div>
