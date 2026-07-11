@@ -84,3 +84,14 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .leaflet-interactive {
   transition: fill 0.4s ease, stroke 0.4s ease, stroke-width 0.3s ease;
 }
+
+/* Responsive nav visibility — immune to per-page CSS tree-shaking */
+@media (max-width: 1023px) {
+  .nav-desktop { display: none !important; }
+  .nav-ext-links { display: none !important; }
+}
+@media (min-width: 1024px) {
+  .nav-desktop { display: flex !important; }
+  .nav-ext-links { display: flex !important; }
+  .nav-mobile-only { display: none !important; }
+}

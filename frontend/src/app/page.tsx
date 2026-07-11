@@ -449,7 +449,7 @@ export default function MapPage() {
 
         {/* Mobile hint */}
         {viewMode === "map" && selected.length === 0 && (
-          <div className="lg:hidden absolute bottom-20 left-1/2 -translate-x-1/2 z-[1000] bg-slate-800/90 text-white text-[13px] px-4 py-2 rounded-full pointer-events-none shadow-lg">
+          <div className="nav-mobile-only absolute bottom-20 left-1/2 -translate-x-1/2 z-[1000] bg-slate-800/90 text-white text-[13px] px-4 py-2 rounded-full pointer-events-none shadow-lg">
             {isEn
               ? "👆 Tap a city to see details"
               : "👆 Toca una ciudad para detalles"}
@@ -458,7 +458,7 @@ export default function MapPage() {
       </div>
 
       {/* Desktop sidebar — always visible */}
-      <div className="hidden lg:flex w-96 bg-white border-l border-slate-200 overflow-y-auto flex-col shadow-lg shadow-slate-200/50">
+      <div className="nav-desktop w-96 bg-white border-l border-slate-200 overflow-y-auto flex-col shadow-lg shadow-slate-200/50">
         {selected.length > 0 ? (
           <CityPanel
             selected={selected}
@@ -475,7 +475,7 @@ export default function MapPage() {
       {/* Mobile bottom sheet — only when city selected */}
       {selected.length > 0 && (
         <div
-          className={`lg:hidden fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
+          className={`nav-mobile-only fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
             mobileOpen ? "translate-y-0" : "translate-y-full"
           }`}
           style={{ maxHeight: "80dvh" }}

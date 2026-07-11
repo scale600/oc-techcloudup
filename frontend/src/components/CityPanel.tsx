@@ -2,6 +2,7 @@
 import type { CityData, Metric, MetricDef } from "@/lib/types";
 import { getMetric } from "@/lib/metrics";
 import ComparisonBar from "./ComparisonBar";
+import TrendChart from "./TrendChart";
 
 interface Props {
   selected: CityData[];
@@ -58,7 +59,7 @@ export default function CityPanel({ selected, all, metric, isEn, onClose }: Prop
           </div>
           <button
             onClick={onClose}
-            className="hidden lg:block text-slate-300 hover:text-slate-500 text-xl leading-none transition-colors"
+            className="nav-desktop text-slate-300 hover:text-slate-500 text-xl leading-none transition-colors"
           >
             &times;
           </button>
@@ -88,6 +89,8 @@ export default function CityPanel({ selected, all, metric, isEn, onClose }: Prop
             );
           })}
         </div>
+
+        <TrendChart city={city} all={all} metric={metric} isEn={isEn} />
 
         <ComparisonBar selected={selected} all={all} metric={metric} isEn={isEn} />
 
@@ -129,7 +132,7 @@ export default function CityPanel({ selected, all, metric, isEn, onClose }: Prop
         </div>
         <button
           onClick={onClose}
-          className="hidden lg:block text-slate-300 hover:text-slate-500 text-xl leading-none transition-colors"
+          className="nav-desktop text-slate-300 hover:text-slate-500 text-xl leading-none transition-colors"
         >
           &times;
         </button>

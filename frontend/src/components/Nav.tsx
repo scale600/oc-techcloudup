@@ -68,7 +68,7 @@ export function Nav() {
           <span className="text-indigo-600">OC</span> Infographics
         </Link>
 
-        <nav className="hidden lg:flex ml-6 items-center gap-1" aria-label="Main navigation">
+        <nav className="nav-desktop ml-6 items-center gap-1" aria-label="Main navigation">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -88,7 +88,7 @@ export function Nav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-0.5">
-          <div className="hidden lg:flex items-center gap-0.5">
+          <div className="nav-ext-links items-center gap-0.5">
             <a href="https://github.com/scale600" target="_blank" rel="noopener noreferrer"
               className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               aria-label="GitHub repository">
@@ -119,7 +119,7 @@ export function Nav() {
 
           <button
             onClick={() => setDrawerOpen(true)}
-            className="lg:hidden p-2 ml-0.5 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="nav-mobile-only p-2 ml-0.5 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors"
             aria-label="Open menu"
           >
             <HamburgerIcon />
@@ -128,7 +128,7 @@ export function Nav() {
       </header>
 
       {drawerOpen && (
-        <div className="lg:hidden fixed inset-0 z-[3000]" aria-hidden="true">
+        <div className="nav-mobile-only fixed inset-0 z-[3000]" aria-hidden="true">
           <div
             className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"
             onClick={closeDrawer}
