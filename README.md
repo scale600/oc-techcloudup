@@ -44,8 +44,11 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
   │  files     │                       │              │
   └────────────┘                       └──────────────┘
 
-  CI/CD: GitHub Actions → build → rsync → oc-a1
-  SSL:   Let's Encrypt via certbot (auto-renew)
+  CI/CD:  GitHub Actions → build → rsync → oc-a1
+  IaC:    Terraform (infra) + Ansible (config)
+  SSL:    Let's Encrypt via certbot (auto-renew)
+
+  Standby: Cloudflare Pages (warm) — 3 min failover
 ```
 
 ## Features
@@ -74,6 +77,7 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
 | **VCN** | Public subnet | — |
 | **DNS** | Cloudflare (proxy) | SSL termination, CDN, DDoS protection |
 | **CI/CD** | GitHub Actions | Auto-deploy on push to main |
+| **IaC** | Terraform + Ansible | Infrastructure provisioning + config management |
 
 ### Application
 
@@ -141,6 +145,7 @@ The platform has evolved through several phases:
 | **Chatbot** | Early 2026 | FastAPI + Ollama + Open WebUI + ATP Database + Load Balancer |
 | **Static Pivot** | July 2026 | Removed all backend services, static JSON + Nginx on A1 |
 | **Production Migration** | July 2026 | Production moved from vm2 (E2.1.Micro) to oc-a1 (A1.Flex, 6 GB) — 6x more RAM headroom |
+| **IaC + DR** | July 2026 | Terraform, Ansible, Docker configs added — full infrastructure as code + disaster recovery plan |
 
 Previously removed services:
 - ✗ Ollama + Open WebUI — Chatbot discontinued
@@ -150,6 +155,24 @@ Previously removed services:
 - ✗ Redis — No caching layer needed
 - ✗ n8n pipeline — Data compiled at build time
 - ✗ oc-platform-vm2 — Decommissioned, replaced by oc-a1
+
+## Disaster Recovery
+
+All infrastructure is defined as code. Recovery from any failure is automated via Terraform + Ansible.
+
+| Scenario | RTO | Procedure |
+|----------|-----|-----------|
+| Instance failure (oc-a1) | ~16 min | `terraform apply` → `ansible-playbook web.yml` → git push |
+| Instance failure (oc-monitor) | ~20 min | `terraform apply` → `ansible-playbook monitoring.yml` |
+| OCI Phoenix region outage | ~3 min | Switch DNS to Cloudflare Pages standby |
+| Full OCI account loss | ~70 min | New account → `terraform apply` → `ansible-playbook site.yml` |
+| DNS / SSL expiry | ~2 min | `certbot renew` or update Cloudflare DNS |
+
+**Standby**: Cloudflare Pages connected to this repo — auto-builds on push, ready to take over with a DNS switch.
+
+**IaC stack**: Terraform (`terraform/`) for infrastructure, Ansible (`ansible/`) for configuration, Docker (`frontend/Dockerfile`) for containerized deployment.
+
+Full plan: [`docs/DR.md`](docs/DR.md)
 
 ## Support
 
