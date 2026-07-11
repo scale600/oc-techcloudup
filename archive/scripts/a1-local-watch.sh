@@ -1,10 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
-COMP="ocid1.tenancy.oc1..aaaaaaaalostpsemrqsvcpxhgysrgqgxwdggwdffnq7puvi7oqmsyymw524q"
+# Source from oci-vars.sh or set manually
+COMP="${COMPARTMENT_ID:-}"
 LOG="/tmp/a1-watch.log"
-SN1="ocid1.subnet.oc1.phx.aaaaaaaapez6lu6niui2fweztioishqnir3zy5li37fhekgfisghkgvcznkq"
-SN2="ocid1.subnet.oc1.phx.aaaaaaaafq4l7vro7jltnhe3t3f2gygjcjysfaghx5ohjblxat6r3bbncl3q"
+SN1="${SUBNET_ID_1:-}"
+SN2="${SUBNET_ID_2:-}"
 
 log() { echo "[$(date '+%H:%M:%S')] $*" | tee -a "$LOG"; }
 

@@ -12,7 +12,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VM_IP="${VM_IP:-129.146.143.243}"
+VM_IP="${VM_IP:-<vm-ip-here>}"
 SSH_KEY="${HOME}/.ssh/oc-techcloudup"
 SSH_OPTS="-o StrictHostKeyChecking=no -i $SSH_KEY"
 REMOTE="opc@$VM_IP"
