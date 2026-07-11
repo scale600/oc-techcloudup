@@ -306,7 +306,7 @@ export default function MapPage() {
         {viewMode === "map" && m && (
           <>
             {/* Metric pills */}
-            <div className="absolute top-3 left-3 right-3 sm:left-4 sm:right-auto z-[1000]">
+            <div className="absolute top-3 left-3 right-3 sm:left-4 sm:right-auto z-[2001]">
               <div className="flex gap-1 glass rounded-2xl shadow-lg shadow-slate-200/50 p-1 overflow-x-auto no-scrollbar">
                 {METRICS.map((x) => (
                   <button
@@ -340,7 +340,7 @@ export default function MapPage() {
                   }}
                   onFocus={() => setShowDropdown(true)}
                   placeholder={isEn ? "Search city…" : "Buscar ciudad…"}
-                  className="w-full px-3 py-1.5 text-[12px] glass rounded-xl border-0 outline-none focus:ring-2 focus:ring-indigo-300 text-slate-700 placeholder-slate-400"
+                  className="w-full px-3 py-1.5 text-[12px] bg-white/90 backdrop-blur rounded-xl border border-slate-200/60 outline-none focus:ring-2 focus:ring-indigo-300 text-slate-700 placeholder-slate-400 shadow-sm"
                 />
                 {searchQuery && (
                   <button
@@ -449,7 +449,7 @@ export default function MapPage() {
 
         {/* Mobile hint */}
         {viewMode === "map" && selected.length === 0 && (
-          <div className="nav-mobile-only absolute bottom-20 left-1/2 -translate-x-1/2 z-[1000] bg-slate-800/90 text-white text-[13px] px-4 py-2 rounded-full pointer-events-none shadow-lg">
+          <div className="nav-mobile-only absolute bottom-12 left-1/2 -translate-x-1/2 z-[1000] bg-slate-800/90 text-white text-[13px] px-4 py-2 rounded-full pointer-events-none shadow-lg">
             {isEn
               ? "👆 Tap a city to see details"
               : "👆 Toca una ciudad para detalles"}
@@ -475,10 +475,10 @@ export default function MapPage() {
       {/* Mobile bottom sheet — only when city selected */}
       {selected.length > 0 && (
         <div
-          className={`nav-mobile-only fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
+          className={`nav-mobile-only fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 overflow-hidden ${
             mobileOpen ? "translate-y-0" : "translate-y-full"
           }`}
-          style={{ maxHeight: "80dvh" }}
+          style={{ maxHeight: "60dvh" }}
         >
           <div className="sticky top-0 bg-white rounded-t-2xl pt-2.5 pb-2 border-b border-slate-100">
             <div className="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-2" />
@@ -495,7 +495,7 @@ export default function MapPage() {
           </div>
           <div
             className="overflow-y-auto"
-            style={{ maxHeight: "calc(80dvh - 3rem)" }}
+            style={{ maxHeight: "calc(60dvh - 3rem)" }}
           >
             <CityPanel
               selected={selected}
