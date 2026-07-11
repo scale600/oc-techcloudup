@@ -330,7 +330,7 @@ export default function MapPage() {
               </p>
 
               {/* City search */}
-              <div className="relative mt-2 ml-1 w-full sm:w-52" ref={searchRef}>
+              <div className="relative mt-2 ml-1 w-44 sm:w-52" ref={searchRef}>
                 <input
                   type="text"
                   value={searchQuery}
