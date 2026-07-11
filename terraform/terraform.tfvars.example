@@ -1,0 +1,36 @@
+# ============================================================================
+# Terraform Variables — Example
+# ============================================================================
+# Copy this file to terraform.tfvars and fill in real values.
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# NEVER commit terraform.tfvars — it contains secrets.
+# ============================================================================
+
+# --- OCI Authentication ---
+# Get these from: https://cloud.oracle.com/identity/domains/my-profile
+tenancy_ocid    = "ocid1.tenancy.oc1..aaaaaaaa..."
+user_ocid       = "ocid1.user.oc1..aaaaaaaa..."
+fingerprint     = "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
+private_key_path = "~/.oci/oci_api_key.pem"
+
+# --- Region ---
+region = "us-phoenix-1"
+
+# --- SSH Key ---
+# The public key that will be placed in ~/.ssh/authorized_keys on each instance
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQ..."
+
+# --- Compute (Optional — defaults are Always Free tier values) ---
+# a1_shape            = "VM.Standard.A1.Flex"
+# a1_ocpus            = 1
+# a1_memory_gb        = 6
+# a1_boot_volume_gb   = 50
+# monitor_shape       = "VM.Standard.E2.1.Micro"
+# monitor_boot_volume_gb = 50
+
+# --- Network (Optional — defaults match current setup) ---
+# vcn_cidr            = "10.0.0.0/16"
+# pub_subnet_ad1_cidr = "10.0.1.0/24"
+# pub_subnet_ad2_cidr = "10.0.3.0/24"
+# priv_subnet_ad1_cidr = "10.0.2.0/24"

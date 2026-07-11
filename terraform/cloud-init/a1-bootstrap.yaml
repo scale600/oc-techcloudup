@@ -1,0 +1,88 @@
+#cloud-config
+# ============================================================================
+# cloud-init for oc-a1 — Production Nginx Static Site
+# Oracle Linux 9 (ARM, A1.Flex)
+# ============================================================================
+
+# Update all packages on first boot
+package_update: true
+package_upgrade: true
+
+packages:
+  - nginx
+  - certbot
+  - python3-certbot-nginx
+  - git
+
+# Write Nginx configuration
+write_files:
+  - path: /etc/nginx/conf.d/oc-platform.conf
+    permissions: "0644"
+    owner: root:root
+    content: |
+      server {
+          listen 80;
+          server_name oc.techcloudup.com;
+
+          root /var/www/oc-platform;
+          index index.html;
+
+          # Security headers
+          add_header X-Frame-Options "SAMEORIGIN" always;
+          add_header X-Content-Type-Options "nosniff" always;
+          add_header X-XSS-Protection "1; mode=block" always;
+          add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+          # Gzip compression
+          gzip on;
+          gzip_types text/plain text/css application/json application/javascript text/xml application/xml text/javascript image/svg+xml;
+          gzip_min_length 256;
+          gzip_vary on;
+
+          # Static assets with long cache
+          location /_next/static {
+              alias /var/www/oc-platform/_next/static;
+              expires 1y;
+              add_header Cache-Control "public, immutable";
+          }
+
+          # Public assets
+          location / {
+              try_files $uri $uri.html $uri/ =404;
+          }
+
+          # Health check endpoint
+          location /health {
+              access_log off;
+              return 200 "OK";
+              add_header Content-Type text/plain;
+          }
+      }
+
+  - path: /var/log/a1-bootstrap.done
+    permissions: "0644"
+    owner: root:root
+    content: "A1 bootstrap complete — $(date -u)"
+
+# Create directory structure
+runcmd:
+  - mkdir -p /var/www/oc-platform
+
+  # Firewall
+  - systemctl enable --now firewalld
+  - firewall-cmd --permanent --add-service=http
+  - firewall-cmd --permanent --add-service=https
+  - firewall-cmd --reload
+
+  # SELinux context for webroot
+  - semanage fcontext -a -t httpd_sys_content_t "/var/www/oc-platform(/.*)?" || true
+  - restorecon -Rv /var/www/oc-platform || true
+
+  # Enable and start Nginx
+  - systemctl enable nginx
+  - systemctl start nginx
+
+  # Remove Nginx default server block
+  - rm -f /etc/nginx/conf.d/default.conf || true
+
+final_message: "oc-a1 bootstrap complete — Nginx ready on :80"

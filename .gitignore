@@ -28,7 +28,7 @@ ojdbc.properties
 *.tfstate.*
 *.tfvars
 !terraform.tfvars.example
-.terraform.lock.hcl
+/.terraform.lock.hcl
 override.tf
 override.tf.json
 *_override.tf
