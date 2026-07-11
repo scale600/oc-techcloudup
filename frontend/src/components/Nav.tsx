@@ -140,7 +140,7 @@ export function Nav() {
             className="absolute inset-0 bg-slate-900/30 backdrop-blur-sm"
             onClick={closeDrawer}
           />
-          <div className="absolute right-0 top-0 bottom-0 w-64 bg-white shadow-2xl animate-slide-in-right">
+          <div className="absolute right-0 top-0 bottom-0 w-56 bg-white shadow-2xl animate-slide-in-right">
             <div className="flex items-center justify-between px-4 h-11 border-b border-slate-200/50">
               <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                 {isEn ? "Menu" : "Menú"}
