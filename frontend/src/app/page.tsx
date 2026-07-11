@@ -478,7 +478,7 @@ export default function MapPage() {
           className={`nav-mobile-only fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 overflow-hidden ${
             mobileOpen ? "translate-y-0" : "translate-y-full"
           }`}
-          style={{ maxHeight: "60dvh" }}
+          style={{ maxHeight: "calc(100dvh - 250px)" }}
         >
           <div className="sticky top-0 bg-white rounded-t-2xl pt-2.5 pb-2 border-b border-slate-100">
             <div className="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-2" />
@@ -495,7 +495,7 @@ export default function MapPage() {
           </div>
           <div
             className="overflow-y-auto"
-            style={{ maxHeight: "calc(60dvh - 3rem)" }}
+            style={{ maxHeight: "calc(100dvh - 250px - 3rem)" }}
           >
             <CityPanel
               selected={selected}
