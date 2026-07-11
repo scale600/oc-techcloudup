@@ -33,10 +33,20 @@ jobs:
         working-directory: frontend
         run: npm run build
 
+      - name: Prepare remote directory
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            sudo mkdir -p /tmp/oc-platform
+            sudo chown -R deploy:deploy /tmp/oc-platform
+
       - name: Deploy static files
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avzr --delete
+          switches: -avzr --delete --no-perms
           path: frontend/out/
           remote_path: /tmp/oc-platform
           remote_host: ${{ secrets.DEPLOY_HOST }}
@@ -53,4 +63,4 @@ jobs:
             sudo cp -r /tmp/oc-platform/* /var/www/oc-platform/
             sudo chown -R nginx:nginx /var/www/oc-platform
             sudo systemctl reload nginx
-            echo "Deploy complete — nginx reloaded"
+            echo "Deployed $(date -u) — nginx reloaded"
