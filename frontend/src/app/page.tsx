@@ -240,7 +240,7 @@ export default function MapPage() {
         <div className="absolute top-3 right-3 sm:right-4 z-[1001] flex rounded-xl glass shadow-lg shadow-slate-200/50 p-0.5">
           <button
             onClick={() => setViewMode("map")}
-            className={`px-3 py-1.5 rounded-[10px] text-[12px] font-medium transition-all duration-200 ${
+            className={`px-3 py-2 rounded-[10px] text-[12px] font-medium transition-all duration-200 ${
               viewMode === "map"
                 ? "bg-indigo-600 text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
@@ -250,7 +250,7 @@ export default function MapPage() {
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`px-3 py-1.5 rounded-[10px] text-[12px] font-medium transition-all duration-200 ${
+            className={`px-3 py-2 rounded-[10px] text-[12px] font-medium transition-all duration-200 ${
               viewMode === "table"
                 ? "bg-indigo-600 text-white shadow-sm"
                 : "text-slate-500 hover:text-slate-700"
@@ -314,7 +314,7 @@ export default function MapPage() {
                     onClick={() => setMetric(x.key)}
                     title={x.tip}
                     aria-pressed={metric === x.key}
-                    className={`shrink-0 px-3 py-1.5 rounded-xl text-[13px] font-medium transition-all duration-200 whitespace-nowrap ${
+                    className={`shrink-0 px-3 py-2 rounded-xl text-[13px] font-medium transition-all duration-200 whitespace-nowrap ${
                       metric === x.key
                         ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/25"
                         : "text-slate-500 hover:text-slate-700 hover:bg-white/60"
