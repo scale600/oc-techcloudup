@@ -93,6 +93,10 @@ export default function MapPage() {
 
   useEffect(() => {
     if (!mounted) return;
+    if (selected.length === 0) {
+      window.history.replaceState(null, "", window.location.pathname);
+      return;
+    }
     const params = new URLSearchParams();
     params.set("metric", metric);
     for (const c of selected) params.append("city", c.name);
@@ -270,8 +274,10 @@ export default function MapPage() {
 
         {viewMode === "map" && mounted && (
           <MapContainer
-            center={[33.68, -117.82]}
-            zoom={10}
+            center={[33.68, -117.89]}
+            zoom={10.3}
+            zoomSnap={0.25}
+            zoomDelta={0.25}
             style={{ height: "100%", width: "100%" }}
             zoomControl={true}
             attributionControl={false}
@@ -324,7 +330,7 @@ export default function MapPage() {
               </p>
 
               {/* City search */}
-              <div className="relative mt-2 ml-1 w-52" ref={searchRef}>
+              <div className="relative mt-2 ml-1 w-full sm:w-52" ref={searchRef}>
                 <input
                   type="text"
                   value={searchQuery}
@@ -472,23 +478,24 @@ export default function MapPage() {
           className={`lg:hidden fixed inset-x-0 bottom-0 z-[2000] bg-white rounded-t-2xl shadow-2xl transition-transform duration-300 ${
             mobileOpen ? "translate-y-0" : "translate-y-full"
           }`}
-          style={{ maxHeight: "75dvh" }}
+          style={{ maxHeight: "80dvh" }}
         >
-          <div className="sticky top-0 bg-white rounded-t-2xl pt-2 pb-1 border-b border-slate-100">
-            <div className="w-8 h-1 bg-slate-300 rounded-full mx-auto mb-2" />
+          <div className="sticky top-0 bg-white rounded-t-2xl pt-2.5 pb-2 border-b border-slate-100">
+            <div className="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-2" />
             <button
               onClick={() => {
                 setSelected([]);
                 setMobileOpen(false);
               }}
-              className="absolute right-3 top-1.5 text-slate-400 hover:text-slate-600 text-xl leading-none p-1"
+              className="absolute right-2 top-1 flex items-center justify-center w-10 h-10 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+              aria-label={isEn ? "Close panel" : "Cerrar panel"}
             >
-              &times;
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
           <div
             className="overflow-y-auto"
-            style={{ maxHeight: "calc(75dvh - 2.5rem)" }}
+            style={{ maxHeight: "calc(80dvh - 3rem)" }}
           >
             <CityPanel
               selected={selected}
