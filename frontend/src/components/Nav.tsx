@@ -64,9 +64,16 @@ export function Nav() {
   return (
     <>
       <header className="h-11 glass flex items-center px-4 z-50 border-b border-slate-200/50">
-        <Link href="/" className="font-semibold text-sm tracking-tight text-slate-800 hover:text-indigo-600 transition-colors shrink-0">
+        <a
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.replace("/");
+          }}
+          className="font-semibold text-sm tracking-tight text-slate-800 hover:text-indigo-600 transition-colors shrink-0 cursor-pointer"
+        >
           <span className="text-indigo-600">OC</span> Infographics
-        </Link>
+        </a>
 
         <nav className="nav-desktop ml-6 items-center gap-1" aria-label="Main navigation">
           {NAV_LINKS.map((link) => {
