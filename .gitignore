@@ -139,10 +139,6 @@ test-results/
 # ============================================================
 # Project-Specific
 # ============================================================
-PRD-kor.md
-PRD.md
-free-resources.md
-
 # OCI resource IDs (use oci-vars.sh.example as template)
 scripts/oci-vars.sh
 
