@@ -13,7 +13,7 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
 
 **Live**: [oc.techcloudup.com](https://oc.techcloudup.com)
 
-![OC Dashboard — Irvine selected](oc-dashboard-irvine.png)
+![OC Dashboard — Irvine selected](archive/screenshots/oc-dashboard-irvine.png)
 
 | Before (Chatbot) | After (Infographic Map) |
 |---|---|
@@ -29,27 +29,23 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
                    Cloudflare (proxy + DNS)
                      SSL Termination
                            │
-                  ┌────────▼────────┐
-                  │  Compute (A1)    │  ← Production
-                  │  1 OCPU / 6 GB   │
-                  │  ARM Ampere      │
-                  │  Oracle Linux 9  │
-                  │                  │
-                  │  ┌────────────┐  │
-                  │  │  Nginx     │  │
-                  │  │  :80/:443  │  │
-                  │  │  static    │  │
-                  │  │  files     │  │
-                  │  └────────────┘  │
-                  └──────────────────┘
-                           │
-                  ┌────────▼────────┐
-                  │  Compute (vm3)   │  ← Standby
-                  │  E2.1.Micro     │
-                  │  1 OCPU / 1 GB  │
-                  └──────────────────┘
+        ┌──────────────────┼──────────────────┐
+        │                                     │
+  ┌─────▼─────┐                        ┌──────▼──────┐
+  │  oc-a1     │  ← Production         │  oc-monitor  │  ← Monitoring
+  │  A1.Flex   │                       │  E2.1.Micro  │
+  │  1 OCPU    │                       │  1 OCPU      │
+  │  6 GB RAM  │                       │  1 GB RAM    │
+  │  ARM       │                       │  Ubuntu 24   │
+  │            │                       │              │
+  │  Nginx     │                       │  Uptime Kuma │
+  │  :80/:443  │                       │  :3001       │
+  │  static    │                       │  Nginx :80   │
+  │  files     │                       │              │
+  └────────────┘                       └──────────────┘
 
-        SSL: Cloudflare Origin Certificate (15-year, auto-trusted)
+  CI/CD: GitHub Actions → build → rsync → oc-a1
+  SSL:   Let's Encrypt via certbot (auto-renew)
 ```
 
 ## Features
@@ -73,11 +69,11 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
 
 | Resource | Spec | Role |
 |---|---|---|
-| **oc-a1** | Ampere A1.Flex (1 OCPU, 6 GB RAM, 30 GB) | Production — Nginx, static files, SSL |
-| **oc-platform-vm3** | E2.1.Micro (1 OCPU, 1 GB RAM) | Standby failover |
-| **Boot Volume** | ~47 GB | Within Always Free 200 GB |
+| **oc-a1** | Ampere A1.Flex (1 OCPU, 6 GB RAM, 30 GB) | Production — Nginx, static files |
+| **oc-monitor** | E2.1.Micro (1 OCPU, 1 GB RAM, 50 GB) | Uptime Kuma monitoring + Nginx |
 | **VCN** | Public subnet | — |
 | **DNS** | Cloudflare (proxy) | SSL termination, CDN, DDoS protection |
+| **CI/CD** | GitHub Actions | Auto-deploy on push to main |
 
 ### Application
 
@@ -89,7 +85,7 @@ An interactive BI infographic platform that visualizes Orange County, CA demogra
 | **Charts** | Chart.js + react-chartjs-2 | Comparison bars, scatter plots, trend lines |
 | **State** | Zustand | Tiny (1 KB) global state for i18n |
 | **Web Server** | Nginx | Static files, gzip, security headers, SSL |
-| **SSL** | Cloudflare Origin Certificate | 15-year, auto-trusted by Cloudflare |
+| **SSL** | Let's Encrypt via certbot | Auto-renew, trusted by all browsers |
 | **i18n** | Custom React context | EN / ES toggle, 2 locales, localStorage persistence |
 | **Data** | Static JSON (`oc-cities.json`, 26 KB) | No database, client-side processing |
 
@@ -118,13 +114,14 @@ npm run dev          # http://localhost:3000
 
 ### Production Build & Deploy
 
+Deployment is automated via GitHub Actions on push to `main`. To deploy manually:
+
 ```bash
-# Build static frontend
 cd frontend && npm run build    # outputs to frontend/out/
 
-# Deploy to production (A1)
-scp -r frontend/out/* opc@<a1-ip>:/tmp/oc-platform/
-ssh opc@<a1-ip> "sudo cp -r /tmp/oc-platform/* /var/www/oc-platform/ && sudo chown -R nginx:nginx /var/www/oc-platform && sudo systemctl reload nginx"
+# Manual deploy
+scp -r frontend/out/* deploy@<a1-ip>:/tmp/oc-platform/
+ssh deploy@<a1-ip> "sudo cp -r /tmp/oc-platform/* /var/www/oc-platform/ && sudo chown -R nginx:nginx /var/www/oc-platform && sudo systemctl reload nginx"
 ```
 
 ## Data

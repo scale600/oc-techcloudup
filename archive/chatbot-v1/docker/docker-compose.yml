@@ -1,0 +1,26 @@
+# OC Infographics — Static Site Deployment
+# ============================================================================
+# After pivot from chatbot to interactive infographic map (July 2026),
+# the frontend is fully static (Next.js export). No backend services needed.
+#
+# This compose file is kept as a minimal placeholder. All services below
+# were removed as they're no longer required:
+#   - ollama        (LLM inference — chatbot discontinued)
+#   - open-webui    (Chat UI — chatbot discontinued)
+#   - api           (FastAPI — frontend now loads static JSON directly)
+#   - redis         (Cache — never activated, was profile:full only)
+#
+# Nginx is installed directly on the VM via dnf (see cloud-init bootstrap).
+# Frontend static files are served from /var/www/oc-platform.
+#
+# Monthly cost target: $0 (Always Free)
+# ============================================================================
+version: "3.8"
+
+services:
+  # No services currently needed — static site only.
+  # Add services here when backend functionality is reintroduced.
+
+networks:
+  default:
+    name: oc-platform

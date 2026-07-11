@@ -46,18 +46,18 @@ All 34 cities as a filterable, sortable data table.
 
 ### 4. Time-Series Trends
 
-- [ ] Add historical ACS data (multiple year ranges)
-- [ ] Line chart in CityPanel showing metric over time
-- [ ] County average trend line for reference
-- [ ] Animated transitions between years
+- [x] Add historical ACS data (multiple year ranges)
+- [x] Line chart in CityPanel showing metric over time
+- [x] County average trend line for reference
+- [ ] Animated transitions between years (nice-to-have)
 
 ### 5. Metric Correlation Scatter Plot
 
-- [ ] X-axis / Y-axis metric selectors
-- [ ] Each dot = one city
-- [ ] Hover for city name + values
-- [ ] Trend line (linear regression)
-- [ ] Color by population size
+- [x] X-axis / Y-axis metric selectors
+- [x] Each dot = one city
+- [x] Hover for city name + values
+- [x] Trend line (linear regression with R²)
+- [x] Color by population size
 
 ### 6. Data Export
 
@@ -115,4 +115,4 @@ All 34 cities as a filterable, sortable data table.
 
 ---
 
-**Status**: 2026-07-10 — #1, #2, #3 completed ✅
+**Status**: 2026-07-10 — #1, #2, #3, #4, #5 completed ✅
