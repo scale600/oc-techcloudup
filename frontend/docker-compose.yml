@@ -1,0 +1,27 @@
+# ============================================================================
+# Docker Compose — OC TechCloudUp Frontend
+# ============================================================================
+# Local development:
+#   docker compose up --build      # build + serve on :3000
+#   docker compose up -d           # detached mode
+#   docker compose down            # stop and remove
+#
+# Production-like test:
+#   docker compose -f docker-compose.yml up --build
+# ============================================================================
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oc-techcloudup
+    ports:
+      - "${PORT:-3000}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
