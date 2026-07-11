@@ -1,0 +1,16 @@
+# Ansible Galaxy requirements (none needed — all built-in + community collections)
+# Collections used:
+#   - ansible.posix          (firewalld, sefcontext)
+#   - community.general      (ufw)
+#   - community.docker       (docker_container, docker_volume)
+#
+# Install with:
+#   ansible-galaxy collection install -r requirements.yml
+---
+collections:
+  - name: ansible.posix
+    version: ">=1.5.0"
+  - name: community.general
+    version: ">=9.0.0"
+  - name: community.docker
+    version: ">=3.0.0"

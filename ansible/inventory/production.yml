@@ -1,0 +1,30 @@
+# ============================================================================
+# Production Inventory — OC TechCloudUp
+# ============================================================================
+# Usage:
+#   ansible-playbook site.yml
+#   ansible-playbook web.yml
+#   ansible-playbook monitoring.yml
+#   ansible web -m ping
+# ============================================================================
+
+all:
+  vars:
+    ansible_ssh_private_key_file: "~/.ssh/id_rsa"
+
+  children:
+    production:
+      hosts:
+        oc-a1:
+          ansible_host: 129.146.121.250
+        oc-monitor:
+          ansible_host: 161.153.94.156
+          ansible_user: ubuntu
+
+    web:
+      hosts:
+        oc-a1:
+
+    monitoring:
+      hosts:
+        oc-monitor:

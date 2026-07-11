@@ -1,0 +1,16 @@
+# ============================================================================
+# Group Variables — all hosts
+# ============================================================================
+
+# OCI default user (opc on Oracle Linux, ubuntu on Ubuntu)
+# Override per-host if needed; Ansible will use remote_user from ansible.cfg
+ansible_user: opc
+ansible_python_interpreter: /usr/bin/python3
+
+# Common packages
+common_packages:
+  - git
+  - curl
+  - vim
+  - htop
+  - nc

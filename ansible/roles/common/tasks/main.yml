@@ -1,0 +1,135 @@
+# ============================================================================
+# Common Role — Tasks
+# ============================================================================
+# Runs on ALL hosts. Handles:
+#   - Package cache update
+#   - Common packages (git, curl, vim, htop)
+#   - Firewall setup (firewalld on Oracle Linux, ufw on Ubuntu)
+#   - OCI iptables fix (Ubuntu images have REJECT before ufw)
+# ============================================================================
+
+- name: Update package cache (dnf)
+  ansible.builtin.dnf:
+    update_cache: true
+    update_only: true
+  when: ansible_os_family == "RedHat"
+  tags: [update]
+
+- name: Update package cache (apt)
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: safe
+    cache_valid_time: 3600
+  when: ansible_os_family == "Debian"
+  tags: [update]
+
+- name: Install common packages (dnf)
+  ansible.builtin.dnf:
+    name: "{{ common_packages }}"
+    state: present
+  when: ansible_os_family == "RedHat"
+  tags: [packages]
+
+- name: Install common packages (apt)
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  tags: [packages]
+
+# --- Firewall: Oracle Linux (firewalld) ---
+- name: Install and enable firewalld
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Ensure firewalld is installed
+      ansible.builtin.dnf:
+        name: firewalld
+        state: present
+
+    - name: Start and enable firewalld
+      ansible.builtin.systemd:
+        name: firewalld
+        state: started
+        enabled: true
+
+    - name: Open HTTP port
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Open HTTPS port
+      ansible.posix.firewalld:
+        service: https
+        permanent: true
+        state: enabled
+        immediate: true
+
+# --- Firewall: Ubuntu (ufw) ---
+- name: Configure ufw on Ubuntu
+  when: ansible_os_family == "Debian"
+  block:
+    - name: Allow SSH
+      community.general.ufw:
+        rule: allow
+        port: "22"
+        proto: tcp
+
+    - name: Allow HTTP
+      community.general.ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+
+    - name: Allow HTTPS
+      community.general.ufw:
+        rule: allow
+        port: "443"
+        proto: tcp
+
+    - name: Enable ufw
+      community.general.ufw:
+        state: enabled
+        default: deny
+        policy: deny
+
+# --- OCI iptables fix (Ubuntu images) ---
+# Oracle Ubuntu images have REJECT rules before ufw chains in iptables.
+# This inserts ACCEPT rules at the top of INPUT to bypass them.
+- name: Fix OCI iptables for SSH/HTTP/HTTPS
+  when: ansible_os_family == "Debian"
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ item }}"
+    jump: ACCEPT
+    action: insert
+    rule_num: 1
+  loop:
+    - "22"
+    - "80"
+    - "443"
+  become: true
+  tags: [iptables]
+
+# --- SELinux context for webroot (Oracle Linux) ---
+- name: Set SELinux context for webroot
+  when: ansible_os_family == "RedHat"
+  block:
+    - name: Check if SELinux is enforcing
+      ansible.builtin.command: getenforce
+      register: selinux_status
+      changed_when: false
+
+    - name: Add SELinux fcontext for webroot
+      ansible.builtin.sefcontext:
+        target: "/var/www/oc-platform(/.*)?"
+        setype: httpd_sys_content_t
+        state: present
+      when: "'Enforcing' in selinux_status.stdout"
+
+    - name: Apply SELinux context
+      ansible.builtin.command: restorecon -Rv /var/www/oc-platform
+      changed_when: false
+      when: "'Enforcing' in selinux_status.stdout"

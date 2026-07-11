@@ -1,0 +1,10 @@
+# ============================================================================
+# Web Playbook — oc-a1 only
+# ============================================================================
+- name: Configure web server
+  hosts: web
+  become: true
+  roles:
+    - common
+    - nginx
+    - deploy_user

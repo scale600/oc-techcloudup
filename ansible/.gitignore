@@ -1,0 +1,12 @@
+# Ansible Galaxy collections
+ansible/collections/
+
+# Ansible retry files
+*.retry
+
+# Inventory with real IPs (use production.yml.example for templates)
+# inventory/production.yml is committed (IPs are public, keys not included)
+
+# Vault files
+vault.yml
+*.vault

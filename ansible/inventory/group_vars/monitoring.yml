@@ -1,0 +1,10 @@
+# ============================================================================
+# Group Variables — monitoring (oc-monitor)
+# ============================================================================
+
+# Uptime Kuma
+uptime_kuma_port: 3001
+uptime_kuma_version: "1"
+
+# Nginx reverse proxy
+nginx_proxy_conf: /etc/nginx/sites-available/uptime-kuma

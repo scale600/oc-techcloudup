@@ -1,0 +1,27 @@
+# ============================================================================
+# Site Playbook — Master
+# ============================================================================
+# Runs ALL roles on all hosts.
+#
+# Usage:
+#   ansible-playbook playbooks/site.yml
+#   ansible-playbook playbooks/site.yml --check --diff   # dry run
+#   ansible-playbook playbooks/site.yml --tags nginx      # only nginx
+# ============================================================================
+
+- name: Configure web server (oc-a1)
+  hosts: web
+  become: true
+  roles:
+    - common
+    - nginx
+    - deploy_user
+
+- name: Configure monitoring server (oc-monitor)
+  hosts: monitoring
+  become: true
+  roles:
+    - common
+    - docker
+    - nginx
+    - uptime_kuma

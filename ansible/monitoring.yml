@@ -1,0 +1,11 @@
+# ============================================================================
+# Monitoring Playbook — oc-monitor only
+# ============================================================================
+- name: Configure monitoring server
+  hosts: monitoring
+  become: true
+  roles:
+    - common
+    - docker
+    - nginx
+    - uptime_kuma

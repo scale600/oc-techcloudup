@@ -1,0 +1,60 @@
+# ============================================================================
+# Uptime Kuma Role — Tasks
+# ============================================================================
+# Runs Uptime Kuma in Docker + Nginx reverse proxy.
+# For oc-monitor (monitoring group).
+# ============================================================================
+
+- name: Create Uptime Kuma Docker volume
+  community.docker.docker_volume:
+    name: uptime-kuma-data
+    state: present
+
+- name: Run Uptime Kuma container
+  community.docker.docker_container:
+    name: uptime-kuma
+    image: "louislam/uptime-kuma:{{ uptime_kuma_version }}"
+    state: started
+    restart_policy: always
+    ports:
+      - "{{ uptime_kuma_port }}:3001"
+    volumes:
+      - uptime-kuma-data:/app/data
+
+- name: Remove default Nginx site
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Deploy Nginx reverse proxy config
+  ansible.builtin.template:
+    src: uptime-kuma.conf.j2
+    dest: "{{ nginx_proxy_conf }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload Nginx
+
+- name: Enable Nginx proxy site
+  ansible.builtin.file:
+    src: "{{ nginx_proxy_conf }}"
+    dest: /etc/nginx/sites-enabled/uptime-kuma
+    state: link
+  notify: Reload Nginx
+
+- name: Allow Uptime Kuma port in ufw
+  community.general.ufw:
+    rule: allow
+    port: "{{ uptime_kuma_port }}"
+    proto: tcp
+
+- name: Insert iptables ACCEPT for Uptime Kuma port
+  ansible.builtin.iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: "{{ uptime_kuma_port }}"
+    jump: ACCEPT
+    action: insert
+    rule_num: 1
+  become: true
+  tags: [iptables]

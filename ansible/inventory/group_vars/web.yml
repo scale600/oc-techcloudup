@@ -1,0 +1,15 @@
+# ============================================================================
+# Group Variables — web (oc-a1)
+# ============================================================================
+
+domain: oc.techcloudup.com
+webroot: /var/www/oc-platform
+certbot_email: "admin@techcloudup.com"  # CHANGE THIS
+
+# Nginx
+nginx_user: nginx
+nginx_conf_path: /etc/nginx/conf.d/oc-platform.conf
+
+# Deploy user (for GitHub Actions CI/CD)
+deploy_user: deploy
+deploy_ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."  # CHANGE THIS to actual deploy key
