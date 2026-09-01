@@ -104,7 +104,7 @@ export default function TrendChart({ city, all, metric, isEn }: Props) {
       <div className="flex items-center gap-2 mb-3">
         <span className="text-sm">{m.symbol}</span>
         <h3 className="text-xs font-semibold text-slate-700">
-          {isEn ? `5-Year Trend: ${m.label}` : `Tendencia 5 Años: ${m.labelEs}`}
+          {isEn ? `5-Year Trend (est.): ${m.label}` : `Tendencia 5 Años (est.): ${m.labelEs}`}
         </h3>
       </div>
       <div style={{ height: 180 }}>
@@ -112,8 +112,8 @@ export default function TrendChart({ city, all, metric, isEn }: Props) {
       </div>
       <p className="text-[10px] text-slate-400 mt-2 text-center">
         {isEn
-          ? "ACS 5-Year Estimates · 2019–2023"
-          : "Estimaciones ACS 5 Años · 2019–2023"}
+          ? "Estimated trend · baseline ACS 2019–2023"
+          : "Tendencia estimada · base ACS 2019–2023"}
       </p>
     </div>
   );

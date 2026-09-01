@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { METRICS, getMetric } from "@/lib/metrics";
 import type { CityData, Metric, GeoJsonData } from "@/lib/types";
+import { useLang } from "@/lib/i18n";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -28,6 +29,8 @@ function linearRegression(points: { x: number; y: number }[]): { slope: number; 
 }
 
 export default function CorrelationPage() {
+  const { lang } = useLang();
+  const isEn = lang === "en";
   const [data, setData] = useState<CityData[]>([]);
   const [xMetric, setXMetric] = useState<Metric>("median_income");
   const [yMetric, setYMetric] = useState<Metric>("edu_pct");
@@ -61,7 +64,7 @@ export default function CorrelationPage() {
   const chartData = useMemo(() => ({
     datasets: [
       {
-        label: "Cities",
+        label: isEn ? "Cities" : "Ciudades",
         data: points.map((p) => ({
           x: p.x,
           y: p.y,
@@ -81,7 +84,7 @@ export default function CorrelationPage() {
         pointHoverRadius: points.map((p) => 6 + (p.pop / maxPop) * 10),
       },
       {
-        label: `Trend (R²=${reg.r2.toFixed(2)})`,
+        label: `${isEn ? "Trend" : "Tendencia"} (R²=${reg.r2.toFixed(2)})`,
         data: [
           { x: xMin - xPad, y: reg.slope * (xMin - xPad) + reg.intercept },
           { x: xMax + xPad, y: reg.slope * (xMax + xPad) + reg.intercept },
@@ -94,7 +97,7 @@ export default function CorrelationPage() {
         backgroundColor: "transparent",
       },
     ],
-  }), [points, reg, maxPop, xMin, xMax, xPad]);
+  }), [points, reg, maxPop, xMin, xMax, xPad, isEn]);
 
   const options = useMemo(() => ({
     responsive: true,
@@ -120,23 +123,23 @@ export default function CorrelationPage() {
     },
     scales: {
       x: {
-        title: { display: true, text: xDef.label, font: { size: 12, weight: "bold" as const } },
+        title: { display: true, text: isEn ? xDef.label : xDef.labelEs, font: { size: 12, weight: "bold" as const } },
         ticks: { callback: (v: string | number) => xDef.legendFmt(Number(v)), font: { size: 10 } },
         grid: { color: "rgba(0,0,0,0.05)" },
       },
       y: {
-        title: { display: true, text: yDef.label, font: { size: 12, weight: "bold" as const } },
+        title: { display: true, text: isEn ? yDef.label : yDef.labelEs, font: { size: 12, weight: "bold" as const } },
         ticks: { callback: (v: string | number) => yDef.legendFmt(Number(v)), font: { size: 10 } },
         grid: { color: "rgba(0,0,0,0.05)" },
       },
     },
-  }), [xDef, yDef]);
+  }), [xDef, yDef, isEn]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-4 sm:space-y-6 flex flex-col" style={{ height: "calc(100dvh - 2.75rem)" }}>
       <header className="text-center space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Metric Correlation</h1>
-        <p className="text-sm text-slate-500">Explore how different metrics relate across Orange County cities. Each dot is a city — larger dots have higher population.</p>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">{isEn ? "Metric Correlation" : "Correlación de Métricas"}</h1>
+        <p className="text-sm text-slate-500">{isEn ? "Explore how different metrics relate across Orange County cities. Each dot is a city — larger dots have higher population." : "Explora cómo se relacionan las métricas entre las ciudades del Condado de Orange. Cada punto es una ciudad — los puntos más grandes tienen mayor población."}</p>
       </header>
 
       {/* Axis selectors */}
@@ -149,7 +152,7 @@ export default function CorrelationPage() {
             className="text-xs border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 outline-none focus:ring-2 focus:ring-indigo-300"
           >
             {METRICS.map((m) => (
-              <option key={m.key} value={m.key}>{m.symbol} {m.label}</option>
+              <option key={m.key} value={m.key}>{m.symbol} {isEn ? m.label : m.labelEs}</option>
             ))}
           </select>
         </div>
@@ -161,7 +164,7 @@ export default function CorrelationPage() {
             className="text-xs border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 outline-none focus:ring-2 focus:ring-indigo-300"
           >
             {METRICS.map((m) => (
-              <option key={m.key} value={m.key}>{m.symbol} {m.label}</option>
+              <option key={m.key} value={m.key}>{m.symbol} {isEn ? m.label : m.labelEs}</option>
             ))}
           </select>
         </div>
@@ -177,12 +180,12 @@ export default function CorrelationPage() {
         {data.length > 0 ? (
           <Scatter data={chartData} options={options} style={{ height: "100%" }} />
         ) : (
-          <div className="flex items-center justify-center h-full text-sm text-slate-400">Loading data...</div>
+          <div className="flex items-center justify-center h-full text-sm text-slate-400">{isEn ? "Loading data..." : "Cargando datos..."}</div>
         )}
       </div>
 
       <p className="text-[10px] text-slate-400 text-center">
-        U.S. Census Bureau · ACS 2019–2023 · {data.length} cities
+        {isEn ? "U.S. Census Bureau · ACS 2019–2023" : "Censo de EE. UU. · ACS 2019–2023"} · {data.length} {isEn ? "cities" : "ciudades"}
       </p>
     </div>
   );

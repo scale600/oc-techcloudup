@@ -15,6 +15,7 @@ function getTopCities(cities: CityData[], metric: Metric, count: number, ascendi
 }
 
 function getOCStats(all: CityData[]) {
+  if (all.length === 0) return { pop: 0, income: 0, home: 0 };
   const pop = all.reduce((s, c) => s + c.population, 0);
   const income = Math.round(all.reduce((s, c) => s + c.median_income, 0) / all.length);
   const home = Math.round(all.reduce((s, c) => s + c.median_home, 0) / all.length);

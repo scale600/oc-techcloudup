@@ -25,7 +25,10 @@ const CITY_METRIC_ITEMS: { k: Metric; emoji: string; labelEn: string; labelEs: s
 const SELECTION_COLORS = ["#6366f1", "#f59e0b", "#10b981"];
 
 function getRank(city: CityData, all: CityData[], metric: Metric): number {
-  return all.filter((c) => c[metric] > city[metric]).length + 1;
+  const def = getMetric(metric);
+  const better = (c: CityData) =>
+    def.direction === "desc" ? c[metric] < city[metric] : c[metric] > city[metric];
+  return all.filter(better).length + 1;
 }
 
 function getBestCityForMetric(cities: CityData[], metricKey: Metric, def: MetricDef): string | null {
@@ -100,7 +103,9 @@ export default function CityPanel({ selected, all, metric, isEn, onClose }: Prop
           </p>
           {all
             .filter((c) => c.name !== city.name)
-            .sort((a, b) => b[metric] - a[metric])
+            .sort((a, b) =>
+              m.direction === "desc" ? a[metric] - b[metric] : b[metric] - a[metric]
+            )
             .slice(0, 5)
             .map((c, i) => (
               <div key={c.name} className="flex items-center justify-between text-[13px] py-1">

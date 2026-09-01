@@ -10,7 +10,7 @@ const en: Record<string, string> = {
   "nav.about": "About",
   // Datasets
   "datasets.title": "Data Sources & Methodology",
-  "datasets.subtitle": "Every data point on OC Infographics is sourced from official U.S. government publications. No estimates, no AI-generated numbers.",
+  "datasets.subtitle": "Every data point on OC Infographics is sourced from official U.S. government publications. Trend charts are clearly labeled as estimates.",
   "datasets.sources": "Primary Sources",
   "datasets.updated": "Updated",
   "datasets.points": "data points",
@@ -112,7 +112,7 @@ const es: Record<string, string> = {
   "nav.about": "Acerca de",
   // Datasets
   "datasets.title": "Fuentes de Datos y Metodología",
-  "datasets.subtitle": "Cada dato en OC Infographics proviene de publicaciones oficiales del gobierno de EE. UU. Sin estimaciones, sin números generados por IA.",
+  "datasets.subtitle": "Cada dato en OC Infographics proviene de publicaciones oficiales del gobierno de EE. UU. Los gráficos de tendencia están claramente etiquetados como estimaciones.",
   "datasets.sources": "Fuentes Principales",
   "datasets.updated": "Actualizado",
   "datasets.points": "puntos de datos",

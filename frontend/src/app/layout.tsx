@@ -23,7 +23,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full`}>
       <head>
-        <script src="/analytics.js" defer />
         <script src="https://java-redis.techcloudup.com/tracker.js" defer></script>
       </head>
       <body className="h-full flex flex-col bg-white text-gray-900">
