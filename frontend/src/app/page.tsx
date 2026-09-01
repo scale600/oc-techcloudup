@@ -52,6 +52,7 @@ export default function MapPage() {
   selectedRef.current = selected;
   const metricRef = useRef(metric);
   metricRef.current = metric;
+  const zoomOutTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -164,6 +165,10 @@ export default function MapPage() {
 
       layer.on("mouseover", async function (this: LeafletGeoJSON, e: LeafletMouseEvent) {
         const l = e.target as LeafletGeoJSON & { _hoverTooltip?: LeafletTooltip | null };
+        if (zoomOutTimerRef.current !== null) {
+          clearTimeout(zoomOutTimerRef.current);
+          zoomOutTimerRef.current = null;
+        }
         const m = getMetric(metricRef.current);
         const L = await getL();
         const tooltip = L.tooltip({
@@ -189,7 +194,14 @@ export default function MapPage() {
           l._hoverTooltip.remove();
           l._hoverTooltip = undefined;
         }
-        l._map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.5 });
+        const map = l._map;
+        if (zoomOutTimerRef.current !== null) {
+          clearTimeout(zoomOutTimerRef.current);
+        }
+        zoomOutTimerRef.current = setTimeout(() => {
+          map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.5 });
+          zoomOutTimerRef.current = null;
+        }, 350);
       });
     },
     []
