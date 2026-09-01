@@ -169,6 +169,7 @@ export default function MapPage() {
           clearTimeout(zoomOutTimerRef.current);
           zoomOutTimerRef.current = null;
         }
+        l.getTooltip()?.getElement()?.classList.add("city-label-active");
         const m = getMetric(metricRef.current);
         const L = await getL();
         const tooltip = L.tooltip({
@@ -184,12 +185,13 @@ export default function MapPage() {
         l._hoverTooltip = tooltip;
         const bounds = l.getBounds();
         if (bounds.isValid()) {
-          l._map.flyToBounds(bounds, { duration: 1.5, maxZoom: 13, padding: [40, 40] });
+          l._map.flyToBounds(bounds, { duration: 1.2, maxZoom: 12, padding: [40, 40] });
         }
       });
 
       layer.on("mouseout", function (this: LeafletGeoJSON, e: LeafletMouseEvent) {
         const l = e.target as LeafletGeoJSON & { _hoverTooltip?: LeafletTooltip | null };
+        l.getTooltip()?.getElement()?.classList.remove("city-label-active");
         if (l._hoverTooltip) {
           l._hoverTooltip.remove();
           l._hoverTooltip = undefined;
@@ -199,9 +201,9 @@ export default function MapPage() {
           clearTimeout(zoomOutTimerRef.current);
         }
         zoomOutTimerRef.current = setTimeout(() => {
-          map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.5 });
+          map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.6 });
           zoomOutTimerRef.current = null;
-        }, 350);
+        }, 500);
       });
     },
     []
