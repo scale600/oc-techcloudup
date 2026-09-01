@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
-import type { GeoJSON as LeafletGeoJSON, Tooltip as LeafletTooltip, LeafletMouseEvent } from "leaflet";
+import type { GeoJSON as LeafletGeoJSON, Tooltip as LeafletTooltip, LeafletMouseEvent, Map as LeafletMap } from "leaflet";
 import { useLang } from "@/lib/i18n";
 import type { CityData, Metric, GeoJsonData } from "@/lib/types";
 import { METRICS, getColor, getMetric } from "@/lib/metrics";
@@ -152,6 +152,13 @@ export default function MapPage() {
       layer.on("click", (e: LeafletMouseEvent) => {
         const isShift = !!(e.originalEvent as MouseEvent).shiftKey;
         selectCityRef.current(props, isShift);
+        if (!isShift) {
+          const bounds = layer.getBounds();
+          const map = e.target._map as LeafletMap | undefined;
+          if (map && bounds.isValid()) {
+            map.flyToBounds(bounds, { duration: 1.2, maxZoom: 13, padding: [40, 40] });
+          }
+        }
       });
 
       layer.bindTooltip(props.name, {
