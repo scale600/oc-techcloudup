@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import dynamic from "next/dynamic";
-import type { GeoJSON as LeafletGeoJSON, Tooltip as LeafletTooltip, LeafletMouseEvent, Map as LeafletMap } from "leaflet";
+import type { GeoJSON as LeafletGeoJSON, Tooltip as LeafletTooltip, LeafletMouseEvent } from "leaflet";
 import { useLang } from "@/lib/i18n";
 import type { CityData, Metric, GeoJsonData } from "@/lib/types";
 import { METRICS, getColor, getMetric } from "@/lib/metrics";
@@ -14,6 +14,8 @@ async function getL() {
   if (!_L) _L = await import("leaflet");
   return _L;
 }
+
+const DEFAULT_VIEW = { center: [33.68, -117.89] as [number, number], zoom: 10.3 };
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((m) => m.MapContainer),
@@ -152,13 +154,6 @@ export default function MapPage() {
       layer.on("click", (e: LeafletMouseEvent) => {
         const isShift = !!(e.originalEvent as MouseEvent).shiftKey;
         selectCityRef.current(props, isShift);
-        if (!isShift) {
-          const bounds = layer.getBounds();
-          const map = e.target._map as LeafletMap | undefined;
-          if (map && bounds.isValid()) {
-            map.flyToBounds(bounds, { duration: 1.2, maxZoom: 13, padding: [40, 40] });
-          }
-        }
       });
 
       layer.bindTooltip(props.name, {
@@ -182,6 +177,10 @@ export default function MapPage() {
         tooltip.setLatLng(l.getBounds().getCenter());
         tooltip.addTo(l._map!);
         l._hoverTooltip = tooltip;
+        const bounds = l.getBounds();
+        if (bounds.isValid()) {
+          l._map.flyToBounds(bounds, { duration: 1.0, maxZoom: 13, padding: [40, 40] });
+        }
       });
 
       layer.on("mouseout", function (this: LeafletGeoJSON, e: LeafletMouseEvent) {
@@ -190,6 +189,7 @@ export default function MapPage() {
           l._hoverTooltip.remove();
           l._hoverTooltip = undefined;
         }
+        l._map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.0 });
       });
     },
     []
@@ -281,8 +281,8 @@ export default function MapPage() {
 
         {viewMode === "map" && mounted && (
           <MapContainer
-            center={[33.68, -117.89]}
-            zoom={10.3}
+            center={DEFAULT_VIEW.center}
+            zoom={DEFAULT_VIEW.zoom}
             zoomSnap={0.25}
             zoomDelta={0.25}
             style={{ height: "100%", width: "100%" }}
