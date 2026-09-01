@@ -280,9 +280,12 @@ export default function MapPage() {
             zoomDelta={0.25}
             style={{ height: "100%", width: "100%" }}
             zoomControl={true}
-            attributionControl={false}
+            attributionControl={true}
           >
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+            />
             {geoData && (
               <GeoJSON
                 data={geoData}
@@ -433,7 +436,7 @@ export default function MapPage() {
         {/* Source */}
         {viewMode === "map" && (
         <div
-          className={`absolute bottom-4 right-3 sm:right-4 z-[1000] transition-all duration-300 ${
+          className={`absolute bottom-8 right-3 sm:right-4 z-[1000] transition-all duration-300 ${
             mobileOpen
               ? "opacity-0 sm:opacity-100"
               : "opacity-100"
