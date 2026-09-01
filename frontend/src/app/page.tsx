@@ -179,7 +179,7 @@ export default function MapPage() {
         l._hoverTooltip = tooltip;
         const bounds = l.getBounds();
         if (bounds.isValid()) {
-          l._map.flyToBounds(bounds, { duration: 1.0, maxZoom: 13, padding: [40, 40] });
+          l._map.flyToBounds(bounds, { duration: 1.5, maxZoom: 13, padding: [40, 40] });
         }
       });
 
@@ -189,7 +189,7 @@ export default function MapPage() {
           l._hoverTooltip.remove();
           l._hoverTooltip = undefined;
         }
-        l._map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.0 });
+        l._map.flyTo(DEFAULT_VIEW.center, DEFAULT_VIEW.zoom, { duration: 1.5 });
       });
     },
     []
