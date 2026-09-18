@@ -1,5 +1,11 @@
 # OC TechCloudUp
 
+**oc.techcloudup.com – Orange County Public Data Platform**
+
+Purpose: Interactive BI infographic platform visualizing Orange County, CA demographics through choropleth maps, city-level comparisons, correlation analysis, and time-series trends — community-supported, open source, and served as static files for sub-second loads.
+
+Core Tech: OCI Always Free (Ampere A1.Flex, E2.1.Micro), Next.js 16 + React 19 + TypeScript 5, Tailwind CSS 4, Leaflet + react-leaflet, Chart.js + react-chartjs-2, Zustand, Terraform + Ansible (IaC), Nginx + Cloudflare, GitHub Actions.
+
 > Orange County public data platform — interactive infographic maps, community-supported and open source.
 
 [![Stack](https://img.shields.io/badge/OCI-Always_Free-ED1C24?logo=oracle)](https://www.oracle.com/cloud/free/)
