@@ -12,6 +12,9 @@ oci_api_key.pem
 # ============================================================
 # OCI (Oracle Cloud Infrastructure)
 # ============================================================
+# Resource & cost reviews (contains account-specific data)
+docs/oci-resource-review-*.md
+
 # Wallet files (Autonomous DB credentials)
 Wallet_*.zip
 wallet/
